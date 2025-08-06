@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Horária Escolar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Sistema Escolar</div>
+        <div class="user-info" id="userInfo"></div>
+        <button id="logoutBtn" style="display:none;">Sair</button>
+    </div>
+
+    <!-- Funções do Pedagogo - Movidas para o topo -->
+    <div class="pedagogo-functions-top" id="pedagogoFunctionsTop" style="display:none;">
+        <div class="container">
+            <h2>Painel de Controle do Pedagogo</h2>
+            <div class="functions-grid">
+                <div class="function-card">
+                    <h3>Marcar Falta</h3>
+                    <div class="form-group">
+                        <input type="text" id="professorFalta" placeholder="Nome do Professor">
+                        <input type="date" id="dataFalta">
+                        <button id="marcarFaltaBtn" class="btn-primary">Marcar Falta</button>
+                    </div>
+                </div>
+                
+                <div class="function-card">
+                    <h3>Remover Falta</h3>
+                    <div class="form-group">
+                        <input type="text" id="professorRemoverFalta" placeholder="Nome do Professor">
+                        <input type="date" id="dataRemoverFalta">
+                        <button id="removerFaltaBtn" class="btn-secondary">Remover Falta</button>
+                    </div>
+                </div>
+                
+                <div class="function-card">
+                    <h3>Alterar Aula</h3>
+                    <div class="form-group">
+                        <div class="form-row">
+                            <select id="turmaAlterar"></select>
+                            <select id="diaAlterar">
+                                <option value="Segunda-feira">Segunda-feira</option>
+                                <option value="Terça-feira">Terça-feira</option>
+                                <option value="Quarta-feira">Quarta-feira</option>
+                                <option value="Quinta-feira">Quinta-feira</option>
+                                <option value="Sexta-feira">Sexta-feira</option>
+                            </select>
+                            <select id="horarioAlterar"></select>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="novaMateria" placeholder="Nova Matéria">
+                            <input type="text" id="novoProfessor" placeholder="Novo Professor">
+                        </div>
+                        <button id="alterarAulaBtn" class="btn-accent">Alterar Aula</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar" id="sidebar">
+            <h2>Turmas</h2>
+            <div id="turmaButtons"></div>
+        </div>
+
+        <div class="content-area">
+            <div id="alunoCalendar" style="display:none;">
+                <h3>Selecione o Dia da Semana:</h3>
+                <div class="day-selector">
+                    <button class="day-btn active" data-day="Segunda-feira">Segunda</button>
+                    <button class="day-btn" data-day="Terça-feira">Terça</button>
+                    <button class="day-btn" data-day="Quarta-feira">Quarta</button>
+                    <button class="day-btn" data-day="Quinta-feira">Quinta</button>
+                    <button class="day-btn" data-day="Sexta-feira">Sexta</button>
+                </div>
+            </div>
+            <div id="gradeHorariaContainer">
+                <h2>Grade Horária - <span id="turmaNome"></span></h2>
+                <div class="table-container">
+                    <table id="gradeHorariaTable">
+                        <thead>
+                            <tr>
+                                <th>Horário</th>
+                                <th>Segunda-feira</th>
+                                <th>Terça-feira</th>
+                                <th>Quarta-feira</th>
+                                <th>Quinta-feira</th>
+                                <th>Sexta-feira</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aulas serão inseridas aqui pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
