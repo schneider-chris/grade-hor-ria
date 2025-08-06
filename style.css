@@ -10,6 +10,12 @@
     --accent-dark: #d97706;
     --danger-color: #ef4444;
     --danger-dark: #dc2626;
+    --info-color: #06b6d4;
+    --info-dark: #0891b2;
+    --success-color: #22c55e;
+    --success-dark: #16a34a;
+    --warning-color: #eab308;
+    --warning-dark: #ca8a04;
     --background-color: #f8fafc;
     --surface-color: #ffffff;
     --text-primary: #1e293b;
@@ -132,10 +138,10 @@ body {
     transform: translateY(-1px);
 }
 
-/* Funções do Pedagogo - Topo */
+/* Funções do Pedagogo - Compactas */
 .pedagogo-functions-top {
     background: var(--surface-color);
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
 }
@@ -143,120 +149,230 @@ body {
 .pedagogo-functions-top h2 {
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-weight: 600;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
-.functions-grid {
+.functions-compact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
 }
 
-.function-card {
+.function-compact-card {
     background: var(--surface-color);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
 }
 
-.function-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+.function-compact-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
-.function-card h3 {
+.function-compact-card h4 {
     color: var(--text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
+    text-align: center;
 }
 
-.form-group {
+.compact-form {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
-.form-row {
+.form-row-compact {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
 }
 
-.form-group input,
-.form-group select {
-    padding: 0.75rem;
+.compact-form input,
+.compact-form select {
+    padding: 0.5rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     transition: all 0.3s ease;
     background: var(--surface-color);
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.compact-form input:focus,
+.compact-form select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+    box-shadow: 0 0 0 2px rgb(59 130 246 / 0.1);
 }
 
-/* Botões */
-.btn-primary {
+/* Botões compactos */
+.btn-compact {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-compact:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-compact.btn-primary {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
 }
 
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
+.btn-compact.btn-secondary {
     background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
     color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
 }
 
-.btn-secondary:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-accent {
+.btn-compact.btn-accent {
     background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
     color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
 }
 
-.btn-accent:hover {
-    transform: translateY(-1px);
+.btn-compact.btn-info {
+    background: linear-gradient(135deg, var(--info-color), var(--info-dark));
+    color: white;
+}
+
+.btn-compact.btn-success {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    color: white;
+}
+
+.btn-compact.btn-warning {
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-dark));
+    color: white;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    margin: 5% auto;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 800px;
+    box-shadow: var(--shadow-lg);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.close {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--danger-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+}
+
+.toast {
+    background: var(--surface-color);
+    border-left: 4px solid var(--success-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
     box-shadow: var(--shadow-md);
+    animation: toastSlideIn 0.3s ease;
+    min-width: 300px;
+}
+
+.toast.error {
+    border-left-color: var(--danger-color);
+}
+
+.toast.warning {
+    border-left-color: var(--warning-color);
+}
+
+.toast.info {
+    border-left-color: var(--info-color);
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /* Layout principal */
@@ -295,6 +411,26 @@ body {
     letter-spacing: 0.05em;
 }
 
+/* Busca de turmas */
+.search-container {
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
 .sidebar button {
     display: block;
     width: 100%;
@@ -322,6 +458,26 @@ body {
     border-color: var(--primary-dark);
 }
 
+/* Info card para pedagogo */
+.info-card {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.info-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.info-card p {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
 /* Área de conteúdo */
 .content-area {
     flex: 1;
@@ -336,6 +492,35 @@ body {
     margin-bottom: 1.5rem;
     font-weight: 600;
     font-size: 1.5rem;
+}
+
+/* Header da grade */
+.grade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.grade-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-icon:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
 }
 
 /* Seletor de dias para alunos */
@@ -367,6 +552,9 @@ body {
     font-weight: 500;
     transition: all 0.3s ease;
     min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .day-btn:hover {
@@ -379,6 +567,16 @@ body {
     background: var(--primary-color);
     color: white;
     border-color: var(--primary-dark);
+}
+
+.day-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.day-date {
+    font-size: 0.75rem;
+    opacity: 0.8;
 }
 
 /* Tabela da grade horária */
@@ -411,6 +609,7 @@ body {
     padding: 1rem;
     border-bottom: 1px solid var(--border-color);
     vertical-align: top;
+    transition: all 0.3s ease;
 }
 
 #gradeHorariaTable tr:nth-child(even) {
@@ -432,10 +631,20 @@ body {
     background-color: #fef2f2 !important;
     color: var(--danger-color) !important;
     border-left: 4px solid var(--danger-color) !important;
+    animation: pulse 2s infinite;
 }
 
 .falta strong {
     color: var(--danger-color) !important;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
 }
 
 /* Formulário de login */
@@ -531,6 +740,19 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+/* Modo tela cheia */
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--surface-color);
+    z-index: 999;
+    padding: 2rem;
+    overflow: auto;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .main-content {
@@ -543,11 +765,11 @@ body {
         position: static;
     }
     
-    .functions-grid {
+    .functions-compact-grid {
         grid-template-columns: 1fr;
     }
     
-    .form-row {
+    .form-row-compact {
         grid-template-columns: 1fr;
     }
     
@@ -571,6 +793,11 @@ body {
         margin: 0.25rem auto;
         display: block;
     }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
 }
 
 @media (max-width: 480px) {
@@ -590,6 +817,15 @@ body {
     #gradeHorariaTable td {
         padding: 0.5rem;
         font-size: 0.75rem;
+    }
+
+    .functions-compact-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .function-compact-card {
+        padding: 0.75rem;
     }
 }
 

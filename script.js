@@ -145,6 +145,7 @@ function inicializarPaginaGrade() {
     configurarInterface();
     criarBotoesTurmas();
     configurarEventos();
+    configurarDatasCalendario();
 
     if (turmaSelecionada) {
         exibirGradeHoraria(turmaSelecionada);
@@ -156,16 +157,42 @@ function configurarInterface() {
     const logoutBtn = document.getElementById('logoutBtn');
     const pedagogoFunctionsTop = document.getElementById('pedagogoFunctionsTop');
     const alunoCalendar = document.getElementById('alunoCalendar');
+    const pedagogoInfo = document.getElementById('pedagogoInfo');
 
     if (tipoUsuario === 'pedagogo' && usuarioLogado) {
         userInfo.textContent = 'Pedagogo Logado';
         logoutBtn.style.display = 'block';
         pedagogoFunctionsTop.style.display = 'block';
+        pedagogoInfo.style.display = 'block';
         preencherSelectsTurmasEHorarios();
+        atualizarResumoDia();
     } else if (tipoUsuario === 'aluno') {
         userInfo.textContent = 'Aluno';
         alunoCalendar.style.display = 'block';
         configurarSeletorDias();
+    }
+}
+
+function configurarDatasCalendario() {
+    if (tipoUsuario === 'aluno') {
+        const hoje = new Date();
+        const diasSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
+        
+        // Encontrar a segunda-feira da semana atual
+        const diaSemana = hoje.getDay();
+        const diasParaSegunda = diaSemana === 0 ? -6 : 1 - diaSemana;
+        const segundaFeira = new Date(hoje);
+        segundaFeira.setDate(hoje.getDate() + diasParaSegunda);
+
+        // Atualizar as datas nos botões
+        for (let i = 0; i < 5; i++) {
+            const data = new Date(segundaFeira);
+            data.setDate(segundaFeira.getDate() + i);
+            const elemento = document.getElementById(`${diasSemana[i]}-date`);
+            if (elemento) {
+                elemento.textContent = `${data.getDate()}/${data.getMonth() + 1}`;
+            }
+        }
     }
 }
 
@@ -215,6 +242,28 @@ function criarBotoesTurmas() {
     }
 
     turmaButtons.innerHTML = buttonsHTML;
+    
+    // Configurar busca de turmas
+    configurarBuscaTurmas();
+}
+
+function configurarBuscaTurmas() {
+    const searchInput = document.getElementById('searchTurma');
+    if (searchInput && tipoUsuario === 'pedagogo') {
+        searchInput.addEventListener('input', function() {
+            const termo = this.value.toLowerCase();
+            const botoes = document.querySelectorAll('#turmaButtons button');
+            
+            botoes.forEach(botao => {
+                const nomeTurma = botao.textContent.toLowerCase();
+                if (nomeTurma.includes(termo)) {
+                    botao.style.display = 'block';
+                } else {
+                    botao.style.display = 'none';
+                }
+            });
+        });
+    }
 }
 
 function configurarEventos() {
@@ -222,6 +271,11 @@ function configurarEventos() {
     const marcarFaltaBtn = document.getElementById('marcarFaltaBtn');
     const removerFaltaBtn = document.getElementById('removerFaltaBtn');
     const alterarAulaBtn = document.getElementById('alterarAulaBtn');
+    const gerarRelatorioFaltasBtn = document.getElementById('gerarRelatorioFaltasBtn');
+    const exportarGradeBtn = document.getElementById('exportarGradeBtn');
+    const estatisticasBtn = document.getElementById('estatisticasBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const printGradeBtn = document.getElementById('printGradeBtn');
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', logout);
@@ -238,6 +292,61 @@ function configurarEventos() {
     if (alterarAulaBtn) {
         alterarAulaBtn.addEventListener('click', alterarAula);
     }
+
+    if (gerarRelatorioFaltasBtn) {
+        gerarRelatorioFaltasBtn.addEventListener('click', gerarRelatorioFaltas);
+    }
+
+    if (exportarGradeBtn) {
+        exportarGradeBtn.addEventListener('click', exportarGrade);
+    }
+
+    if (estatisticasBtn) {
+        estatisticasBtn.addEventListener('click', mostrarEstatisticas);
+    }
+
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+    }
+
+    if (printGradeBtn) {
+        printGradeBtn.addEventListener('click', imprimirGrade);
+    }
+
+    // Configurar modal
+    configurarModal();
+}
+
+function configurarModal() {
+    const modal = document.getElementById('modalRelatorio');
+    const closeModal = document.getElementById('closeModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const printReportBtn = document.getElementById('printReportBtn');
+
+    if (closeModal) {
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+
+    if (printReportBtn) {
+        printReportBtn.addEventListener('click', function() {
+            window.print();
+        });
+    }
+
+    // Fechar modal clicando fora
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 }
 
 function preencherSelectsTurmasEHorarios() {
@@ -334,80 +443,70 @@ function verificarFaltaProfessor(professor, dia) {
         // Para alunos, verificar faltas apenas no dia selecionado
         if (dia !== diaSelecionado) return false;
         
-        // Simular verificação de falta para o dia atual
-        const hoje = new Date().toISOString().split('T')[0];
-        return faltasProfessores[professor] && faltasProfessores[professor].includes(hoje);
+        return faltasProfessores[professor] && faltasProfessores[professor][dia];
     } else {
-        // Para pedagogo, mostrar faltas de hoje
-        const hoje = new Date().toISOString().split('T')[0];
-        const diaSemana = obterDiaSemana(new Date());
-        
-        if (dia !== diaSemana) return false;
-        
-        return faltasProfessores[professor] && faltasProfessores[professor].includes(hoje);
+        // Para pedagogo, mostrar faltas do dia
+        return faltasProfessores[professor] && faltasProfessores[professor][dia];
     }
-}
-
-function obterDiaSemana(data) {
-    const dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-    return dias[data.getDay()];
 }
 
 function marcarFaltaProfessor() {
     const professorFalta = document.getElementById('professorFalta').value;
-    const dataFalta = document.getElementById('dataFalta').value;
+    const diaFalta = document.getElementById('diaFalta').value;
 
-    if (!professorFalta || !dataFalta) {
-        alert('Por favor, preencha o nome do professor e a data da falta.');
+    if (!professorFalta || !diaFalta) {
+        mostrarToast('Por favor, preencha o nome do professor e selecione o dia da falta.', 'error');
         return;
     }
 
     if (!faltasProfessores[professorFalta]) {
-        faltasProfessores[professorFalta] = [];
+        faltasProfessores[professorFalta] = {};
     }
 
-    if (!faltasProfessores[professorFalta].includes(dataFalta)) {
-        faltasProfessores[professorFalta].push(dataFalta);
-    }
+    faltasProfessores[professorFalta][diaFalta] = true;
 
     // Limpar campos
     document.getElementById('professorFalta').value = '';
-    document.getElementById('dataFalta').value = '';
+    document.getElementById('diaFalta').value = '';
 
     // Atualizar grade se necessário
     if (turmaSelecionada) {
         exibirGradeHoraria(turmaSelecionada);
     }
 
-    alert('Falta marcada com sucesso!');
+    atualizarResumoDia();
+    mostrarToast('Falta marcada com sucesso!', 'success');
 }
 
 function removerFaltaProfessor() {
     const professorRemoverFalta = document.getElementById('professorRemoverFalta').value;
-    const dataRemoverFalta = document.getElementById('dataRemoverFalta').value;
+    const diaRemoverFalta = document.getElementById('diaRemoverFalta').value;
 
-    if (!professorRemoverFalta || !dataRemoverFalta) {
-        alert('Por favor, preencha o nome do professor e a data para remover a falta.');
+    if (!professorRemoverFalta || !diaRemoverFalta) {
+        mostrarToast('Por favor, preencha o nome do professor e selecione o dia para remover a falta.', 'error');
         return;
     }
 
     if (faltasProfessores[professorRemoverFalta]) {
-        const index = faltasProfessores[professorRemoverFalta].indexOf(dataRemoverFalta);
-        if (index > -1) {
-            faltasProfessores[professorRemoverFalta].splice(index, 1);
+        delete faltasProfessores[professorRemoverFalta][diaRemoverFalta];
+        
+        // Se não há mais faltas para este professor, remover o objeto
+        if (Object.keys(faltasProfessores[professorRemoverFalta]).length === 0) {
+            delete faltasProfessores[professorRemoverFalta];
         }
     }
 
     // Limpar campos
     document.getElementById('professorRemoverFalta').value = '';
-    document.getElementById('dataRemoverFalta').value = '';
+    document.getElementById('diaRemoverFalta').value = '';
 
     // Atualizar grade se necessário
     if (turmaSelecionada) {
         exibirGradeHoraria(turmaSelecionada);
     }
 
-    alert('Falta removida com sucesso!');
+    atualizarResumoDia();
+    mostrarToast('Falta removida com sucesso!', 'success');
 }
 
 function alterarAula() {
@@ -418,7 +517,7 @@ function alterarAula() {
     const novoProfessor = document.getElementById('novoProfessor').value;
 
     if (!novaMateria || !novoProfessor) {
-        alert('Por favor, preencha a nova matéria e o novo professor.');
+        mostrarToast('Por favor, preencha a nova matéria e o novo professor.', 'error');
         return;
     }
 
@@ -436,7 +535,193 @@ function alterarAula() {
         exibirGradeHoraria(turmaSelecionada);
     }
 
-    alert('Aula alterada com sucesso!');
+    mostrarToast('Aula alterada com sucesso!', 'success');
+}
+
+function gerarRelatorioFaltas() {
+    const modal = document.getElementById('modalRelatorio');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    modalTitle.textContent = 'Relatório de Faltas';
+    
+    let relatorioHTML = '<h4>Faltas por Professor</h4>';
+    
+    if (Object.keys(faltasProfessores).length === 0) {
+        relatorioHTML += '<p>Nenhuma falta registrada.</p>';
+    } else {
+        relatorioHTML += '<table style="width: 100%; border-collapse: collapse;">';
+        relatorioHTML += '<thead><tr style="background: #f8fafc;"><th style="padding: 0.5rem; border: 1px solid #e2e8f0;">Professor</th><th style="padding: 0.5rem; border: 1px solid #e2e8f0;">Dias com Falta</th></tr></thead>';
+        relatorioHTML += '<tbody>';
+        
+        Object.keys(faltasProfessores).forEach(professor => {
+            const diasFalta = Object.keys(faltasProfessores[professor]).join(', ');
+            relatorioHTML += `<tr><td style="padding: 0.5rem; border: 1px solid #e2e8f0;">${professor}</td><td style="padding: 0.5rem; border: 1px solid #e2e8f0;">${diasFalta}</td></tr>`;
+        });
+        
+        relatorioHTML += '</tbody></table>';
+    }
+
+    modalBody.innerHTML = relatorioHTML;
+    modal.style.display = 'block';
+}
+
+function exportarGrade() {
+    if (!turmaSelecionada) {
+        mostrarToast('Selecione uma turma para exportar a grade.', 'error');
+        return;
+    }
+
+    const modal = document.getElementById('modalRelatorio');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    modalTitle.textContent = `Grade Horária - ${turmaSelecionada}`;
+    
+    // Determinar período da turma
+    let periodo = '';
+    if (turmas.manha.includes(turmaSelecionada)) periodo = 'manha';
+    else if (turmas.tarde.includes(turmaSelecionada)) periodo = 'tarde';
+    else if (turmas.noite.includes(turmaSelecionada)) periodo = 'noite';
+
+    let gradeHTML = '<table style="width: 100%; border-collapse: collapse;">';
+    gradeHTML += '<thead><tr style="background: #3b82f6; color: white;">';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Horário</th>';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Segunda-feira</th>';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Terça-feira</th>';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Quarta-feira</th>';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Quinta-feira</th>';
+    gradeHTML += '<th style="padding: 0.75rem; border: 1px solid #e2e8f0;">Sexta-feira</th>';
+    gradeHTML += '</tr></thead><tbody>';
+
+    horarios[periodo].forEach(horario => {
+        gradeHTML += '<tr>';
+        gradeHTML += `<td style="padding: 0.75rem; border: 1px solid #e2e8f0; font-weight: bold;">${horario}</td>`;
+        
+        ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'].forEach(dia => {
+            const aula = gradesHorarias[turmaSelecionada][dia][horario];
+            gradeHTML += `<td style="padding: 0.75rem; border: 1px solid #e2e8f0;"><strong>${aula.materia}</strong><br>${aula.professor}</td>`;
+        });
+        
+        gradeHTML += '</tr>';
+    });
+
+    gradeHTML += '</tbody></table>';
+    modalBody.innerHTML = gradeHTML;
+    modal.style.display = 'block';
+}
+
+function mostrarEstatisticas() {
+    const modal = document.getElementById('modalRelatorio');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    modalTitle.textContent = 'Estatísticas do Sistema';
+    
+    // Calcular estatísticas
+    const totalProfessores = new Set();
+    const totalMaterias = new Set();
+    let totalAulas = 0;
+
+    Object.keys(gradesHorarias).forEach(turma => {
+        Object.keys(gradesHorarias[turma]).forEach(dia => {
+            Object.keys(gradesHorarias[turma][dia]).forEach(horario => {
+                const aula = gradesHorarias[turma][dia][horario];
+                totalProfessores.add(aula.professor);
+                totalMaterias.add(aula.materia);
+                totalAulas++;
+            });
+        });
+    });
+
+    const totalFaltas = Object.keys(faltasProfessores).reduce((total, professor) => {
+        return total + Object.keys(faltasProfessores[professor]).length;
+    }, 0);
+
+    let estatisticasHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Total de Turmas</h4>
+                <p style="font-size: 2rem; font-weight: bold; color: #1e293b;">${Object.keys(turmas.manha).length + Object.keys(turmas.tarde).length + Object.keys(turmas.noite).length}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                <h4 style="color: #10b981; margin-bottom: 0.5rem;">Total de Professores</h4>
+                <p style="font-size: 2rem; font-weight: bold; color: #1e293b;">${totalProfessores.size}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">Total de Matérias</h4>
+                <p style="font-size: 2rem; font-weight: bold; color: #1e293b;">${totalMaterias.size}</p>
+            </div>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                <h4 style="color: #ef4444; margin-bottom: 0.5rem;">Total de Faltas</h4>
+                <p style="font-size: 2rem; font-weight: bold; color: #1e293b;">${totalFaltas}</p>
+            </div>
+        </div>
+        <h4 style="margin-top: 2rem;">Distribuição por Período</h4>
+        <ul>
+            <li><strong>Manhã:</strong> ${turmas.manha.length} turmas</li>
+            <li><strong>Tarde:</strong> ${turmas.tarde.length} turmas</li>
+            <li><strong>Noite:</strong> ${turmas.noite.length} turmas</li>
+        </ul>
+    `;
+
+    modalBody.innerHTML = estatisticasHTML;
+    modal.style.display = 'block';
+}
+
+function toggleFullscreen() {
+    const gradeContainer = document.getElementById('gradeHorariaContainer');
+    gradeContainer.classList.toggle('fullscreen');
+}
+
+function imprimirGrade() {
+    window.print();
+}
+
+function atualizarResumoDia() {
+    const faltasHoje = document.getElementById('faltasHoje');
+    const totalTurmas = document.getElementById('totalTurmas');
+    const professoresAtivos = document.getElementById('professoresAtivos');
+
+    if (faltasHoje) {
+        const totalFaltas = Object.keys(faltasProfessores).reduce((total, professor) => {
+            return total + Object.keys(faltasProfessores[professor]).length;
+        }, 0);
+        faltasHoje.textContent = totalFaltas;
+    }
+
+    if (totalTurmas) {
+        totalTurmas.textContent = Object.keys(turmas.manha).length + Object.keys(turmas.tarde).length + Object.keys(turmas.noite).length;
+    }
+
+    if (professoresAtivos) {
+        const professores = new Set();
+        Object.keys(gradesHorarias).forEach(turma => {
+            Object.keys(gradesHorarias[turma]).forEach(dia => {
+                Object.keys(gradesHorarias[turma][dia]).forEach(horario => {
+                    professores.add(gradesHorarias[turma][dia][horario].professor);
+                });
+            });
+        });
+        professoresAtivos.textContent = professores.size;
+    }
+}
+
+function mostrarToast(mensagem, tipo = 'info') {
+    const toastContainer = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    toast.innerHTML = `
+        <strong>${tipo === 'success' ? 'Sucesso!' : tipo === 'error' ? 'Erro!' : 'Info!'}</strong>
+        <p>${mensagem}</p>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Remover toast após 3 segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
 
 function logout() {

@@ -13,33 +13,47 @@
         <button id="logoutBtn" style="display:none;">Sair</button>
     </div>
 
-    <!-- Funções do Pedagogo - Movidas para o topo -->
+    <!-- Funções do Pedagogo - Compactas e lado a lado -->
     <div class="pedagogo-functions-top" id="pedagogoFunctionsTop" style="display:none;">
         <div class="container">
             <h2>Painel de Controle do Pedagogo</h2>
-            <div class="functions-grid">
-                <div class="function-card">
-                    <h3>Marcar Falta</h3>
-                    <div class="form-group">
+            <div class="functions-compact-grid">
+                <div class="function-compact-card">
+                    <h4>Marcar Falta</h4>
+                    <div class="compact-form">
                         <input type="text" id="professorFalta" placeholder="Nome do Professor">
-                        <input type="date" id="dataFalta">
-                        <button id="marcarFaltaBtn" class="btn-primary">Marcar Falta</button>
+                        <select id="diaFalta">
+                            <option value="">Selecione o dia</option>
+                            <option value="Segunda-feira">Segunda-feira</option>
+                            <option value="Terça-feira">Terça-feira</option>
+                            <option value="Quarta-feira">Quarta-feira</option>
+                            <option value="Quinta-feira">Quinta-feira</option>
+                            <option value="Sexta-feira">Sexta-feira</option>
+                        </select>
+                        <button id="marcarFaltaBtn" class="btn-compact btn-primary">Marcar</button>
                     </div>
                 </div>
                 
-                <div class="function-card">
-                    <h3>Remover Falta</h3>
-                    <div class="form-group">
+                <div class="function-compact-card">
+                    <h4>Remover Falta</h4>
+                    <div class="compact-form">
                         <input type="text" id="professorRemoverFalta" placeholder="Nome do Professor">
-                        <input type="date" id="dataRemoverFalta">
-                        <button id="removerFaltaBtn" class="btn-secondary">Remover Falta</button>
+                        <select id="diaRemoverFalta">
+                            <option value="">Selecione o dia</option>
+                            <option value="Segunda-feira">Segunda-feira</option>
+                            <option value="Terça-feira">Terça-feira</option>
+                            <option value="Quarta-feira">Quarta-feira</option>
+                            <option value="Quinta-feira">Quinta-feira</option>
+                            <option value="Sexta-feira">Sexta-feira</option>
+                        </select>
+                        <button id="removerFaltaBtn" class="btn-compact btn-secondary">Remover</button>
                     </div>
                 </div>
                 
-                <div class="function-card">
-                    <h3>Alterar Aula</h3>
-                    <div class="form-group">
-                        <div class="form-row">
+                <div class="function-compact-card">
+                    <h4>Alterar Aula</h4>
+                    <div class="compact-form">
+                        <div class="form-row-compact">
                             <select id="turmaAlterar"></select>
                             <select id="diaAlterar">
                                 <option value="Segunda-feira">Segunda-feira</option>
@@ -48,38 +62,108 @@
                                 <option value="Quinta-feira">Quinta-feira</option>
                                 <option value="Sexta-feira">Sexta-feira</option>
                             </select>
-                            <select id="horarioAlterar"></select>
                         </div>
-                        <div class="form-row">
+                        <select id="horarioAlterar"></select>
+                        <div class="form-row-compact">
                             <input type="text" id="novaMateria" placeholder="Nova Matéria">
                             <input type="text" id="novoProfessor" placeholder="Novo Professor">
                         </div>
-                        <button id="alterarAulaBtn" class="btn-accent">Alterar Aula</button>
+                        <button id="alterarAulaBtn" class="btn-compact btn-accent">Alterar</button>
+                    </div>
+                </div>
+
+                <div class="function-compact-card">
+                    <h4>Relatórios</h4>
+                    <div class="compact-form">
+                        <button id="gerarRelatorioFaltasBtn" class="btn-compact btn-info">Relatório de Faltas</button>
+                        <button id="exportarGradeBtn" class="btn-compact btn-success">Exportar Grade</button>
+                        <button id="estatisticasBtn" class="btn-compact btn-warning">Estatísticas</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal para Relatórios -->
+    <div id="modalRelatorio" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Relatório</h3>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo do relatório será inserido aqui -->
+            </div>
+            <div class="modal-footer">
+                <button id="printReportBtn" class="btn-primary">Imprimir</button>
+                <button id="closeModalBtn" class="btn-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificações Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
     <div class="main-content">
         <div class="sidebar" id="sidebar">
             <h2>Turmas</h2>
+            <div class="search-container">
+                <input type="text" id="searchTurma" placeholder="Buscar turma..." class="search-input">
+            </div>
             <div id="turmaButtons"></div>
+            
+            <!-- Informações adicionais para pedagogo -->
+            <div id="pedagogoInfo" style="display:none;">
+                <div class="info-card">
+                    <h4>Resumo do Dia</h4>
+                    <div id="resumoDia">
+                        <p><strong>Faltas hoje:</strong> <span id="faltasHoje">0</span></p>
+                        <p><strong>Total de turmas:</strong> <span id="totalTurmas">32</span></p>
+                        <p><strong>Professores ativos:</strong> <span id="professoresAtivos">15</span></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="content-area">
             <div id="alunoCalendar" style="display:none;">
                 <h3>Selecione o Dia da Semana:</h3>
                 <div class="day-selector">
-                    <button class="day-btn active" data-day="Segunda-feira">Segunda</button>
-                    <button class="day-btn" data-day="Terça-feira">Terça</button>
-                    <button class="day-btn" data-day="Quarta-feira">Quarta</button>
-                    <button class="day-btn" data-day="Quinta-feira">Quinta</button>
-                    <button class="day-btn" data-day="Sexta-feira">Sexta</button>
+                    <button class="day-btn active" data-day="Segunda-feira">
+                        <span class="day-name">Segunda</span>
+                        <span class="day-date" id="segunda-date"></span>
+                    </button>
+                    <button class="day-btn" data-day="Terça-feira">
+                        <span class="day-name">Terça</span>
+                        <span class="day-date" id="terca-date"></span>
+                    </button>
+                    <button class="day-btn" data-day="Quarta-feira">
+                        <span class="day-name">Quarta</span>
+                        <span class="day-date" id="quarta-date"></span>
+                    </button>
+                    <button class="day-btn" data-day="Quinta-feira">
+                        <span class="day-name">Quinta</span>
+                        <span class="day-date" id="quinta-date"></span>
+                    </button>
+                    <button class="day-btn" data-day="Sexta-feira">
+                        <span class="day-name">Sexta</span>
+                        <span class="day-date" id="sexta-date"></span>
+                    </button>
                 </div>
             </div>
+            
             <div id="gradeHorariaContainer">
-                <h2>Grade Horária - <span id="turmaNome"></span></h2>
+                <div class="grade-header">
+                    <h2>Grade Horária - <span id="turmaNome"></span></h2>
+                    <div class="grade-actions">
+                        <button id="fullscreenBtn" class="btn-icon" title="Tela cheia">
+                            <span>⛶</span>
+                        </button>
+                        <button id="printGradeBtn" class="btn-icon" title="Imprimir grade">
+                            <span>🖨</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table id="gradeHorariaTable">
                         <thead>
