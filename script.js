@@ -28,24 +28,71 @@ const gradesHorarias = {};
 
 // Inicializar grades horárias com dados de exemplo
 function inicializarGrades() {
-    const materias = ['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Educação Física'];
-    const professores = ['Prof. Silva', 'Prof. Santos', 'Prof. Oliveira', 'Prof. Costa', 'Prof. Pereira', 'Prof. Almeida'];
-    const dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'];
+    // Exemplo para a Turma 1A (Manhã)
+    gradesHorarias["Turma 1A"] = {
+        "Segunda-feira": {
+            "7h30-8h20": { materia: "Português", professor: "Prof. Ana" },
+            "8h20-9h10": { materia: "Matemática", professor: "Prof. Carlos" },
+            "9h10-10h00": { materia: "História", professor: "Prof. Beatriz" },
+            "10h20-11h10": { materia: "Ciências", professor: "Prof. Daniel" },
+            "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "12h00-12h50": { materia: "Educação Física", professor: "Prof. Fernando" }
+        },
+        "Terça-feira": {
+            "7h30-8h20": { materia: "Matemática", professor: "Prof. Carlos" },
+            "8h20-9h10": { materia: "Português", professor: "Prof. Ana" },
+            "9h10-10h00": { materia: "Ciências", professor: "Prof. Daniel" },
+            "10h20-11h10": { materia: "História", professor: "Prof. Beatriz" },
+            "11h10-12h00": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "12h00-12h50": { materia: "Geografia", professor: "Prof. Eva" }
+        },
+        "Quarta-feira": {
+            "7h30-8h20": { materia: "História", professor: "Prof. Beatriz" },
+            "8h20-9h10": { materia: "Geografia", professor: "Prof. Eva" },
+            "9h10-10h00": { materia: "Português", professor: "Prof. Ana" },
+            "10h20-11h10": { materia: "Matemática", professor: "Prof. Carlos" },
+            "11h10-12h00": { materia: "Ciências", professor: "Prof. Daniel" },
+            "12h00-12h50": { materia: "Educação Física", professor: "Prof. Fernando" }
+        },
+        "Quinta-feira": {
+            "7h30-8h20": { materia: "Ciências", professor: "Prof. Daniel" },
+            "8h20-9h10": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "9h10-10h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "10h20-11h10": { materia: "Português", professor: "Prof. Ana" },
+            "11h10-12h00": { materia: "Matemática", professor: "Prof. Carlos" },
+            "12h00-12h50": { materia: "História", professor: "Prof. Beatriz" }
+        },
+        "Sexta-feira": {
+            "7h30-8h20": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "8h20-9h10": { materia: "História", professor: "Prof. Beatriz" },
+            "9h10-10h00": { materia: "Matemática", professor: "Prof. Carlos" },
+            "10h20-11h10": { materia: "Português", professor: "Prof. Ana" },
+            "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "12h00-12h50": { materia: "Ciências", professor: "Prof. Daniel" }
+        }
+    };
+
+    // Preencher as outras turmas com dados aleatórios para demonstração
+    const materias = ["Matemática", "Português", "História", "Geografia", "Ciências", "Educação Física"];
+    const professores = ["Prof. Silva", "Prof. Santos", "Prof. Oliveira", "Prof. Costa", "Prof. Pereira", "Prof. Almeida"];
+    const dias = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"];
 
     Object.keys(turmas).forEach(periodo => {
         turmas[periodo].forEach(turma => {
-            gradesHorarias[turma] = {};
-            dias.forEach(dia => {
-                gradesHorarias[turma][dia] = {};
-                horarios[periodo].forEach(horario => {
-                    const materiaIndex = Math.floor(Math.random() * materias.length);
-                    const professorIndex = Math.floor(Math.random() * professores.length);
-                    gradesHorarias[turma][dia][horario] = {
-                        materia: materias[materiaIndex],
-                        professor: professores[professorIndex]
-                    };
+            if (turma !== "Turma 1A") { // Não sobrescrever a Turma 1A
+                gradesHorarias[turma] = {};
+                dias.forEach(dia => {
+                    gradesHorarias[turma][dia] = {};
+                    horarios[periodo].forEach(horario => {
+                        const materiaIndex = Math.floor(Math.random() * materias.length);
+                        const professorIndex = Math.floor(Math.random() * professores.length);
+                        gradesHorarias[turma][dia][horario] = {
+                            materia: materias[materiaIndex],
+                            professor: professores[professorIndex]
+                        };
+                    });
                 });
-            });
+            }
         });
     });
 }
