@@ -1,88 +1,29 @@
-// Dados das turmas e horários
+// Variáveis globais
+let gradesHorarias = {};
+let faltasProfessores = {}; // Armazena as faltas dos professores
+let turmaAtual = '';
+let diaAtual = 'Segunda-feira';
+let tipoUsuario = '';
+
+// Horários por período
 const horarios = {
-    manha: ["7h30-8h20", "8h20-9h10", "9h10-10h00", "10h20-11h10", "11h10-12h00", "12h00-12h50"],
-    tarde: ["13h30-14h20", "14h20-15h10", "15h10-16h00", "16h20-17h10", "17h10-18h00", "18h00-18h30"],
-    noite: ["18h40-19h40", "19h40-20h30", "20h30-21h30", "21h30-22h10", "22h10-23h00"]
+    manha: ['7h30-8h20', '8h20-9h10', '9h10-10h00', '10h20-11h10', '11h10-12h00', '12h00-12h50'],
+    tarde: ['13h30-14h20', '14h20-15h10', '15h10-16h00', '16h20-17h10', '17h10-18h00', '18h00-18h30'],
+    noite: ['18h40-19h40', '19h40-20h30', '20h30-21h30', '21h30-22h10', '22h10-23h00']
 };
 
-// Dados das turmas
+// Nomes das turmas
 const turmas = {
-    manha: [
-        "Turma 1° ADM", "Turma 1° PORTOS", "Turma 1° DS", "Turma 1° BIO",
-        "Turma 2° ADM", "Turma 2° PORTOS", "Turma 2° DS", "Turma 2° BIO",
-        "Turma 3° ADM", "Turma 3° PORTOS", "Turma 3° DS", "Turma 3° A"
-    ],
-    tarde: [
-        "Turma 1° A", "Turma 1° B", "Turma 1° C", "Turma 1° Adm",
-        "Turma 1° Portos", "Turma 2° A", "Turma 2° B", "Turma 2° C",
-        "Turma 2° D", "Turma 3° B", "Turma 3° C", "Turma 3° D"
-    ],
-    noite: [
-        "Turma 1° STA", "Turma 1° STB", "Turma 2° STA", "Turma 3° STA",
-        "Turma 3° STB", "Turma 1° COMEX", "Turma 2° A PORTOS", "Turma 3° A PORTOS"
-    ]
+    manha: ['Turma 1A', 'Turma 1B', 'Turma 1C', 'Turma 1D', 'Turma 2A', 'Turma 2B', 'Turma 2C', 'Turma 2D', 'Turma 3A', 'Turma 3B', 'Turma 3C', 'Turma 3D'],
+    tarde: ['Turma 4A', 'Turma 4B', 'Turma 4C', 'Turma 4D', 'Turma 5A', 'Turma 5B', 'Turma 5C', 'Turma 5D', 'Turma 6A', 'Turma 6B', 'Turma 6C', 'Turma 6D'],
+    noite: ['Turma 7A', 'Turma 7B', 'Turma 7C', 'Turma 7D', 'Turma 8A', 'Turma 8B', 'Turma 8C', 'Turma 8D']
 };
 
-// Dados das grades horárias
-const gradesHorarias = {};
-
-// Inicializar grades horárias com dados de exemplo
+// Função para inicializar as grades horárias
 function inicializarGrades() {
-    // Exemplo para a Turma 1A (Manhã)
-    gradesHorarias["Turma 1° ADM"] = {
+    // Exemplo para Turma 1A (Manhã)
+    gradesHorarias["Turma 1A"] = {
         "Segunda-feira": {
-            "7h30-8h20": { materia: "Arte", professor: "Prof. André" },
-            "8h20-9h10": { materia: "Língua Inglesa", professor: "Prof. Deise" },
-            "9h10-10h00": { materia: "História", professor: "Prof. Ana Cristina" },
-            "10h20-11h10": { materia: "Biologia", professor: "Prof. Sérgio Tramujas" },
-            "11h10-12h00": { materia: "Língua Inglesa", professor: "Prof. Deise" },
-            "12h00-12h50": { materia: "História", professor: "Prof. Ana Cristina" }
-        },
-        "Terça-feira": {
-            "7h30-8h20": { materia: "Geografia", professor: "Prof. Adélio" },
-            "8h20-9h10": { materia: "Arte", professor: "Prof. André" },
-            "9h10-10h00": { materia: "Projeto de vida", professor: "Prof. Ana Cristina" },
-            "10h20-11h10": { materia: "Ed. Física", professor: "Prof. Juciane" },
-            "11h10-12h00": { materia: "Ed. Física", professor: "Prof. Juciane" },
-            "12h00-12h50": { materia: "Língua Portuguesa", professor: "Prof. Raquel" }
-        },
-        "Quarta-feira": {
-            "7h30-8h20": { materia: "Biologia", professor: "Prof. Sérgio Tramujas" },
-            "8h20-9h10": { materia: "Matemática", professor: "Prof. Claudia" },
-            "9h10-10h00": { materia: "Física", professor: "Prof. Ana Claudia" },
-            "10h20-11h10": { materia: "Física", professor: "Prof. Ana Claudia" },
-            "11h10-12h00": { materia: "Geografia", professor: "Prof. Daniel" },
-            "12h00-12h50": { materia: "Matemática", professor: "Prof. Claudia" }
-        },
-        "Quinta-feira": {
-            "7h30-8h20": { materia: "Língua Portuguesa", professor: "Prof. Raquel" },
-            "8h20-9h10": { materia: "Língua Portuguesa", professor: "Prof. Raquel" },
-            "9h10-10h00": { materia: "Química", professor: "Prof. Marcelo Vella" },
-            "10h20-11h10": { materia: "PrAdm", professor: "Prof. Ricardo" },
-            "11h10-12h00": { materia: "Projeto de vida", professor: "Prof. Ana Cristina" },
-            "12h00-12h50": { materia: "Química", professor: "Prof. Marcelo Vella" }
-        },
-        "Sexta-feira": {
-            "7h30-8h20": { materia: "Matemática", professor: "Prof. Claudia" },
-            "8h20-9h10": { materia: "Filosofia", professor: "Prof. Maicon Keht" },
-            "9h10-10h00": { materia: "Ed. Financeira", professor: "Prof. Carlos" },
-            "10h20-11h10": { materia: "C e V", professor: "Prof. Marcos Souza" },
-            "11h10-12h00": { materia: "Filosofia", professor: "Prof. Maicon Keht" },
-            "12h00-12h50": { materia: "PrAdm", professor: "Prof. Ricardo" }
-        }
-    };
-
-    // Exemplo para a Turma 1B (Manhã)
-    gradesHorarias["Turma 1° PORTOS"] = {
-        "Segunda-feira": {
-            "7h30-8h20": { materia: "Matemática", professor: "Prof. Carlos" },
-            "8h20-9h10": { materia: "Português", professor: "Prof. Ana" },
-            "9h10-10h00": { materia: "Ciências", professor: "Prof. Daniel" },
-            "10h20-11h10": { materia: "História", professor: "Prof. Beatriz" },
-            "11h10-12h00": { materia: "Educação Física", professor: "Prof. Fernando" },
-            "12h00-12h50": { materia: "Geografia", professor: "Prof. Eva" }
-        },
-        "Terça-feira": {
             "7h30-8h20": { materia: "Português", professor: "Prof. Ana" },
             "8h20-9h10": { materia: "Matemática", professor: "Prof. Carlos" },
             "9h10-10h00": { materia: "História", professor: "Prof. Beatriz" },
@@ -90,237 +31,588 @@ function inicializarGrades() {
             "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
             "12h00-12h50": { materia: "Educação Física", professor: "Prof. Fernando" }
         },
+        "Terça-feira": {
+            "7h30-8h20": { materia: "Matemática", professor: "Prof. Carlos" },
+            "8h20-9h10": { materia: "Português", professor: "Prof. Ana" },
+            "9h10-10h00": { materia: "Ciências", professor: "Prof. Daniel" },
+            "10h20-11h10": { materia: "História", professor: "Prof. Beatriz" },
+            "11h10-12h00": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "12h00-12h50": { materia: "Geografia", professor: "Prof. Eva" }
+        },
         "Quarta-feira": {
-            "7h30-8h20": { materia: "Ciências", professor: "Prof. Daniel" },
-            "8h20-9h10": { materia: "História", professor: "Prof. Beatriz" },
+            "7h30-8h20": { materia: "História", professor: "Prof. Beatriz" },
+            "8h20-9h10": { materia: "Geografia", professor: "Prof. Eva" },
             "9h10-10h00": { materia: "Português", professor: "Prof. Ana" },
             "10h20-11h10": { materia: "Matemática", professor: "Prof. Carlos" },
-            "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "11h10-12h00": { materia: "Ciências", professor: "Prof. Daniel" },
             "12h00-12h50": { materia: "Educação Física", professor: "Prof. Fernando" }
         },
         "Quinta-feira": {
-            "7h30-8h20": { materia: "História", professor: "Prof. Beatriz" },
-            "8h20-9h10": { materia: "Geografia", professor: "Prof. Eva" },
-            "9h10-10h00": { materia: "Ciências", professor: "Prof. Daniel" },
-            "10h20-11h10": { materia: "Educação Física", professor: "Prof. Fernando" },
-            "11h10-12h00": { materia: "Português", professor: "Prof. Ana" },
-            "12h00-12h50": { materia: "Matemática", professor: "Prof. Carlos" }
+            "7h30-8h20": { materia: "Ciências", professor: "Prof. Daniel" },
+            "8h20-9h10": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "9h10-10h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "10h20-11h10": { materia: "Português", professor: "Prof. Ana" },
+            "11h10-12h00": { materia: "Matemática", professor: "Prof. Carlos" },
+            "12h00-12h50": { materia: "História", professor: "Prof. Beatriz" }
         },
         "Sexta-feira": {
+            "7h30-8h20": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "8h20-9h10": { materia: "História", professor: "Prof. Beatriz" },
+            "9h10-10h00": { materia: "Matemática", professor: "Prof. Carlos" },
+            "10h20-11h10": { materia: "Português", professor: "Prof. Ana" },
+            "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "12h00-12h50": { materia: "Ciências", professor: "Prof. Daniel" }
+        }
+    };
+
+    // Exemplo para Turma 1B (Manhã)
+    gradesHorarias["Turma 1B"] = {
+        "Segunda-feira": {
+            "7h30-8h20": { materia: "Matemática", professor: "Prof. Carlos" },
+            "8h20-9h10": { materia: "Português", professor: "Prof. Ana" },
+            "9h10-10h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "10h20-11h10": { materia: "História", professor: "Prof. Beatriz" },
+            "11h10-12h00": { materia: "Ciências", professor: "Prof. Daniel" },
+            "12h00-12h50": { materia: "Educação Física", professor: "Prof. Fernando" }
+        },
+        "Terça-feira": {
+            "7h30-8h20": { materia: "Português", professor: "Prof. Ana" },
+            "8h20-9h10": { materia: "História", professor: "Prof. Beatriz" },
+            "9h10-10h00": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "10h20-11h10": { materia: "Matemática", professor: "Prof. Carlos" },
+            "11h10-12h00": { materia: "Geografia", professor: "Prof. Eva" },
+            "12h00-12h50": { materia: "Ciências", professor: "Prof. Daniel" }
+        },
+        "Quarta-feira": {
+            "7h30-8h20": { materia: "Ciências", professor: "Prof. Daniel" },
+            "8h20-9h10": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "9h10-10h00": { materia: "Matemática", professor: "Prof. Carlos" },
+            "10h20-11h10": { materia: "Geografia", professor: "Prof. Eva" },
+            "11h10-12h00": { materia: "Português", professor: "Prof. Ana" },
+            "12h00-12h50": { materia: "História", professor: "Prof. Beatriz" }
+        },
+        "Quinta-feira": {
             "7h30-8h20": { materia: "Geografia", professor: "Prof. Eva" },
             "8h20-9h10": { materia: "Ciências", professor: "Prof. Daniel" },
-            "9h10-10h00": { materia: "Educação Física", professor: "Prof. Fernando" },
-            "10h20-11h10": { materia: "História", professor: "Prof. Beatriz" },
+            "9h10-10h00": { materia: "História", professor: "Prof. Beatriz" },
+            "10h20-11h10": { materia: "Educação Física", professor: "Prof. Fernando" },
             "11h10-12h00": { materia: "Matemática", professor: "Prof. Carlos" },
             "12h00-12h50": { materia: "Português", professor: "Prof. Ana" }
+        },
+        "Sexta-feira": {
+            "7h30-8h20": { materia: "História", professor: "Prof. Beatriz" },
+            "8h20-9h10": { materia: "Matemática", professor: "Prof. Carlos" },
+            "9h10-10h00": { materia: "Português", professor: "Prof. Ana" },
+            "10h20-11h10": { materia: "Ciências", professor: "Prof. Daniel" },
+            "11h10-12h00": { materia: "Educação Física", professor: "Prof. Fernando" },
+            "12h00-12h50": { materia: "Geografia", professor: "Prof. Eva" }
         }
     };
 }
 
-// Dados de faltas dos professores
-let faltasProfessores = {};
-
-// Estado da aplicação
-let usuarioLogado = false;
-let tipoUsuario = '';
-let turmaSelecionada = '';
-let diaSelecionado = 'Segunda-feira';
-
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-    inicializarGrades();
+// Função para obter todos os professores únicos
+function obterTodosProfessores() {
+    const professores = new Set();
     
-    // Verificar qual página está sendo carregada
-    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-        inicializarPaginaInicial();
-    } else if (window.location.pathname.includes('login.html')) {
-        inicializarPaginaLogin();
-    } else if (window.location.pathname.includes('grade.html')) {
-        inicializarPaginaGrade();
-    }
-});
-
-// Página inicial
-function inicializarPaginaInicial() {
-    const alunoBtn = document.getElementById('alunoBtn');
-    const pedagogoBtn = document.getElementById('pedagogoBtn');
-
-    if (alunoBtn) {
-        alunoBtn.addEventListener('click', function() {
-            tipoUsuario = 'aluno';
-            mostrarSelecaoTurma();
-        });
-    }
-
-    if (pedagogoBtn) {
-        pedagogoBtn.addEventListener('click', function() {
-            tipoUsuario = 'pedagogo';
-            window.location.href = 'login.html';
-        });
-    }
-}
-
-function mostrarSelecaoTurma() {
-    const container = document.querySelector('.container');
-    if (container) {
-        container.innerHTML = `
-            <h1>Selecione sua Turma</h1>
-            <div class="turma-selection">
-                <h3>Manhã</h3>
-                ${turmas.manha.map(turma => `<button onclick="selecionarTurma('${turma}')">${turma}</button>`).join('')}
-                <h3>Tarde</h3>
-                ${turmas.tarde.map(turma => `<button onclick="selecionarTurma('${turma}')">${turma}</button>`).join('')}
-                <h3>Noite</h3>
-                ${turmas.noite.map(turma => `<button onclick="selecionarTurma('${turma}')">${turma}</button>`).join('')}
-            </div>
-        `;
-    }
-}
-
-function selecionarTurma(turma) {
-    turmaSelecionada = turma;
-    localStorage.setItem('turmaSelecionada', turma);
-    localStorage.setItem('tipoUsuario', tipoUsuario);
-    window.location.href = 'grade.html';
-}
-
-// Página de login
-function inicializarPaginaLogin() {
-    const loginForm = document.getElementById('loginForm');
-    const loginError = document.getElementById('loginError');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (username === 'pedagogo' && password === '123456') {
-                usuarioLogado = true;
-                tipoUsuario = 'pedagogo';
-                localStorage.setItem('usuarioLogado', 'true');
-                localStorage.setItem('tipoUsuario', 'pedagogo');
-                window.location.href = 'grade.html';
-            } else {
-                if (loginError) {
-                    loginError.textContent = 'Usuário ou senha incorretos!';
+    Object.values(gradesHorarias).forEach(turma => {
+        Object.values(turma).forEach(dia => {
+            Object.values(dia).forEach(aula => {
+                if (aula.professor) {
+                    professores.add(aula.professor);
                 }
-            }
+            });
+        });
+    });
+    
+    return Array.from(professores).sort();
+}
+
+// Função para popular dropdowns de professores
+function popularDropdownProfessores() {
+    const professores = obterTodosProfessores();
+    
+    const selects = [
+        document.getElementById('professorFaltaModal'),
+        document.getElementById('professorRemoverFaltaModal')
+    ];
+    
+    selects.forEach(select => {
+        if (select) {
+            select.innerHTML = '<option value="">Escolha um professor</option>';
+            professores.forEach(professor => {
+                const option = document.createElement('option');
+                option.value = professor;
+                option.textContent = professor;
+                select.appendChild(option);
+            });
+        }
+    });
+}
+
+// Função para popular dropdown de turmas
+function popularDropdownTurmas() {
+    const turmaSelect = document.getElementById('turmaEditarModal');
+    if (turmaSelect) {
+        turmaSelect.innerHTML = '<option value="">Selecione a turma</option>';
+        
+        Object.values(turmas).flat().forEach(turma => {
+            const option = document.createElement('option');
+            option.value = turma;
+            option.textContent = turma;
+            turmaSelect.appendChild(option);
         });
     }
 }
 
-// Página da grade horária
-function inicializarPaginaGrade() {
-    // Recuperar dados do localStorage
-    usuarioLogado = localStorage.getItem('usuarioLogado') === 'true';
-    tipoUsuario = localStorage.getItem('tipoUsuario');
-    turmaSelecionada = localStorage.getItem('turmaSelecionada');
-
-    configurarInterface();
-    criarBotoesTurmas();
-    configurarEventos();
-    configurarDatasCalendario();
-
-    if (turmaSelecionada) {
-        exibirGradeHoraria(turmaSelecionada);
+// Função para popular dropdown de horários baseado na turma
+function popularDropdownHorarios(turmaSelecionada) {
+    const horarioSelect = document.getElementById('horarioEditarModal');
+    if (!horarioSelect || !turmaSelecionada) return;
+    
+    let horariosParaTurma = [];
+    
+    // Determinar período da turma
+    if (turmas.manha.includes(turmaSelecionada)) {
+        horariosParaTurma = horarios.manha;
+    } else if (turmas.tarde.includes(turmaSelecionada)) {
+        horariosParaTurma = horarios.tarde;
+    } else if (turmas.noite.includes(turmaSelecionada)) {
+        horariosParaTurma = horarios.noite;
     }
+    
+    horarioSelect.innerHTML = '<option value="">Selecione o horário</option>';
+    horariosParaTurma.forEach(horario => {
+        const option = document.createElement('option');
+        option.value = horario;
+        option.textContent = horario;
+        horarioSelect.appendChild(option);
+    });
 }
 
-function configurarInterface() {
-    const userInfo = document.getElementById('userInfo');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const pedagogoFunctionsTop = document.getElementById('pedagogoFunctionsTop');
-    const alunoCalendar = document.getElementById('alunoCalendar');
-    const pedagogoInfo = document.getElementById('pedagogoInfo');
-
-    if (tipoUsuario === 'pedagogo' && usuarioLogado) {
-        if (userInfo) userInfo.textContent = 'Pedagogo Logado';
-        if (logoutBtn) logoutBtn.style.display = 'block';
-        if (pedagogoFunctionsTop) pedagogoFunctionsTop.style.display = 'block';
-        if (pedagogoInfo) pedagogoInfo.style.display = 'block';
-        preencherSelectsTurmasEHorarios();
-        atualizarResumoDia();
-    } else if (tipoUsuario === 'aluno') {
-        if (userInfo) userInfo.textContent = 'Aluno';
-        if (alunoCalendar) alunoCalendar.style.display = 'block';
-        configurarSeletorDias();
+// Função para marcar falta de professor
+function marcarFaltaProfessor(professor, dia) {
+    if (!faltasProfessores[professor]) {
+        faltasProfessores[professor] = new Set();
     }
+    faltasProfessores[professor].add(dia);
+    
+    // Salvar no localStorage
+    localStorage.setItem('faltasProfessores', JSON.stringify(
+        Object.fromEntries(
+            Object.entries(faltasProfessores).map(([prof, dias]) => [prof, Array.from(dias)])
+        )
+    ));
+    
+    // Atualizar visual da grade
+    atualizarVisualFaltas();
+    
+    mostrarNotificacao(`Falta marcada para ${professor} na ${dia}`, 'success');
 }
 
-function configurarDatasCalendario() {
-    if (tipoUsuario === 'aluno') {
-        const hoje = new Date();
-        const diasSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
+// Função para remover falta de professor
+function removerFaltaProfessor(professor, dia) {
+    if (faltasProfessores[professor]) {
+        faltasProfessores[professor].delete(dia);
         
-        const diaSemana = hoje.getDay();
-        const diasParaSegunda = diaSemana === 0 ? -6 : 1 - diaSemana;
-        const segundaFeira = new Date(hoje);
-        segundaFeira.setDate(hoje.getDate() + diasParaSegunda);
-
-        for (let i = 0; i < 5; i++) {
-            const data = new Date(segundaFeira);
-            data.setDate(segundaFeira.getDate() + i);
-            const elemento = document.getElementById(`${diasSemana[i]}-date`);
-            if (elemento) {
-                elemento.textContent = `${data.getDate()}/${data.getMonth() + 1}`;
-            }
+        if (faltasProfessores[professor].size === 0) {
+            delete faltasProfessores[professor];
         }
     }
+    
+    // Salvar no localStorage
+    localStorage.setItem('faltasProfessores', JSON.stringify(
+        Object.fromEntries(
+            Object.entries(faltasProfessores).map(([prof, dias]) => [prof, Array.from(dias)])
+        )
+    ));
+    
+    // Atualizar visual da grade
+    atualizarVisualFaltas();
+    
+    mostrarNotificacao(`Falta removida para ${professor} na ${dia}`, 'success');
 }
 
-function configurarSeletorDias() {
-    const dayButtons = document.querySelectorAll('.day-btn');
+// Função para atualizar visual das faltas na grade
+function atualizarVisualFaltas() {
+    // Remover todas as classes de falta existentes
+    document.querySelectorAll('.falta-professor').forEach(cell => {
+        cell.classList.remove('falta-professor');
+    });
     
-    dayButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            dayButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            diaSelecionado = this.getAttribute('data-day');
-            
-            if (turmaSelecionada) {
-                exibirGradeHoraria(turmaSelecionada);
-            }
+    // Aplicar classes de falta onde necessário
+    Object.entries(faltasProfessores).forEach(([professor, dias]) => {
+        dias.forEach(dia => {
+            // Encontrar todas as células deste professor neste dia
+            const cells = document.querySelectorAll(`[data-professor="${professor}"][data-dia="${dia}"]`);
+            cells.forEach(cell => {
+                cell.classList.add('falta-professor');
+            });
         });
     });
 }
 
-function criarBotoesTurmas() {
-    const turmaButtons = document.getElementById('turmaButtons');
-    if (!turmaButtons) return;
-    
-    let buttonsHTML = '';
-
-    if (tipoUsuario === 'pedagogo' && usuarioLogado) {
-        buttonsHTML += '<h4>Manhã</h4>';
-        turmas.manha.forEach(turma => {
-            buttonsHTML += `<button onclick="exibirGradeHoraria('${turma}')">${turma}</button>`;
+// Função para carregar faltas do localStorage
+function carregarFaltas() {
+    const faltasSalvas = localStorage.getItem('faltasProfessores');
+    if (faltasSalvas) {
+        const faltasObj = JSON.parse(faltasSalvas);
+        faltasProfessores = {};
+        
+        Object.entries(faltasObj).forEach(([professor, dias]) => {
+            faltasProfessores[professor] = new Set(dias);
         });
-        buttonsHTML += '<h4>Tarde</h4>';
-        turmas.tarde.forEach(turma => {
-            buttonsHTML += `<button onclick="exibirGradeHoraria('${turma}')">${turma}</button>`;
-        });
-        buttonsHTML += '<h4>Noite</h4>';
-        turmas.noite.forEach(turma => {
-            buttonsHTML += `<button onclick="exibirGradeHoraria('${turma}')">${turma}</button>`;
-        });
-    } else if (tipoUsuario === 'aluno' && turmaSelecionada) {
-        buttonsHTML += `<button onclick="exibirGradeHoraria('${turmaSelecionada}')" class="selected">${turmaSelecionada}</button>`;
     }
-
-    turmaButtons.innerHTML = buttonsHTML;
-    configurarBuscaTurmas();
 }
 
-function configurarBuscaTurmas() {
-    const searchInput = document.getElementById('searchTurma');
-    if (searchInput && tipoUsuario === 'pedagogo') {
-        searchInput.addEventListener('input', function() {
-            const termo = this.value.toLowerCase();
-            const botoes = document.querySelectorAll('#turmaButtons button');
+// Função para mostrar notificação
+function mostrarNotificacao(mensagem, tipo = 'info') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${tipo}`;
+    toast.textContent = mensagem;
+    
+    container.appendChild(toast);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Função para configurar eventos dos modais
+function configurarModais() {
+    // Modal Marcar Falta
+    const marcarFaltasBtn = document.getElementById('marcarFaltasBtn');
+    const modalMarcarFalta = document.getElementById('modalMarcarFalta');
+    const closeMarcarFalta = document.getElementById('closeMarcarFalta');
+    const confirmarMarcarFalta = document.getElementById('confirmarMarcarFalta');
+    
+    if (marcarFaltasBtn) {
+        marcarFaltasBtn.addEventListener('click', () => {
+            modalMarcarFalta.style.display = 'flex';
+        });
+    }
+    
+    if (closeMarcarFalta) {
+        closeMarcarFalta.addEventListener('click', () => {
+            modalMarcarFalta.style.display = 'none';
+        });
+    }
+    
+    if (confirmarMarcarFalta) {
+        confirmarMarcarFalta.addEventListener('click', () => {
+            const professor = document.getElementById('professorFaltaModal').value;
+            const dia = document.getElementById('diaFaltaModal').value;
             
-            botoes.forEach(botao => {
+            if (professor && dia) {
+                marcarFaltaProfessor(professor, dia);
+                modalMarcarFalta.style.display = 'none';
+                
+                // Limpar campos
+                document.getElementById('professorFaltaModal').value = '';
+                document.getElementById('diaFaltaModal').value = 'Segunda-feira';
+            } else {
+                mostrarNotificacao('Por favor, selecione o professor e o dia', 'error');
+            }
+        });
+    }
+    
+    // Modal Remover Falta
+    const removerFaltasBtn = document.getElementById('removerFaltasBtn');
+    const modalRemoverFalta = document.getElementById('modalRemoverFalta');
+    const closeRemoverFalta = document.getElementById('closeRemoverFalta');
+    const confirmarRemoverFalta = document.getElementById('confirmarRemoverFalta');
+    
+    if (removerFaltasBtn) {
+        removerFaltasBtn.addEventListener('click', () => {
+            modalRemoverFalta.style.display = 'flex';
+        });
+    }
+    
+    if (closeRemoverFalta) {
+        closeRemoverFalta.addEventListener('click', () => {
+            modalRemoverFalta.style.display = 'none';
+        });
+    }
+    
+    if (confirmarRemoverFalta) {
+        confirmarRemoverFalta.addEventListener('click', () => {
+            const professor = document.getElementById('professorRemoverFaltaModal').value;
+            const dia = document.getElementById('diaRemoverFaltaModal').value;
+            
+            if (professor && dia) {
+                removerFaltaProfessor(professor, dia);
+                modalRemoverFalta.style.display = 'none';
+                
+                // Limpar campos
+                document.getElementById('professorRemoverFaltaModal').value = '';
+                document.getElementById('diaRemoverFaltaModal').value = 'Segunda-feira';
+            } else {
+                mostrarNotificacao('Por favor, selecione o professor e o dia', 'error');
+            }
+        });
+    }
+    
+    // Modal Editar Horários
+    const editarHorariosBtn = document.getElementById('editarHorariosBtn');
+    const modalEditarHorarios = document.getElementById('modalEditarHorarios');
+    const closeEditarHorarios = document.getElementById('closeEditarHorarios');
+    const confirmarEditarHorario = document.getElementById('confirmarEditarHorario');
+    const turmaEditarModal = document.getElementById('turmaEditarModal');
+    
+    if (editarHorariosBtn) {
+        editarHorariosBtn.addEventListener('click', () => {
+            modalEditarHorarios.style.display = 'flex';
+        });
+    }
+    
+    if (closeEditarHorarios) {
+        closeEditarHorarios.addEventListener('click', () => {
+            modalEditarHorarios.style.display = 'none';
+        });
+    }
+    
+    if (turmaEditarModal) {
+        turmaEditarModal.addEventListener('change', (e) => {
+            popularDropdownHorarios(e.target.value);
+        });
+    }
+    
+    if (confirmarEditarHorario) {
+        confirmarEditarHorario.addEventListener('click', () => {
+            const turma = document.getElementById('turmaEditarModal').value;
+            const dia = document.getElementById('diaEditarModal').value;
+            const horario = document.getElementById('horarioEditarModal').value;
+            const novaMateria = document.getElementById('novaMateriaModal').value;
+            const novoProfessor = document.getElementById('novoProfessorModal').value;
+            
+            if (turma && dia && horario && novaMateria && novoProfessor) {
+                // Criar estrutura se não existir
+                if (!gradesHorarias[turma]) {
+                    gradesHorarias[turma] = {};
+                }
+                if (!gradesHorarias[turma][dia]) {
+                    gradesHorarias[turma][dia] = {};
+                }
+                
+                gradesHorarias[turma][dia][horario] = {
+                    materia: novaMateria,
+                    professor: novoProfessor
+                };
+                
+                modalEditarHorarios.style.display = 'none';
+                mostrarNotificacao('Horário alterado com sucesso!', 'success');
+                
+                // Limpar campos
+                document.getElementById('turmaEditarModal').value = '';
+                document.getElementById('diaEditarModal').value = 'Segunda-feira';
+                document.getElementById('horarioEditarModal').value = '';
+                document.getElementById('novaMateriaModal').value = '';
+                document.getElementById('novoProfessorModal').value = '';
+                
+                // Atualizar grade se estiver visualizando a turma alterada
+                if (turmaAtual === turma) {
+                    exibirGradeHoraria(turma, tipoUsuario);
+                }
+                
+                // Atualizar dropdown de professores
+                popularDropdownProfessores();
+            } else {
+                mostrarNotificacao('Por favor, preencha todos os campos', 'error');
+            }
+        });
+    }
+    
+    // Fechar modais clicando fora
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal')) {
+            e.target.style.display = 'none';
+        }
+    });
+}
+
+// Função para exibir grade horária
+function exibirGradeHoraria(nomeTurma, tipo) {
+    turmaAtual = nomeTurma;
+    tipoUsuario = tipo;
+    
+    const gradeContainer = document.getElementById('gradeHoraria');
+    const gradeTableBody = document.getElementById('gradeTableBody');
+    
+    if (!gradeContainer || !gradeTableBody) {
+        console.error('Elementos da grade não encontrados');
+        return;
+    }
+    
+    // Mostrar container da grade
+    gradeContainer.style.display = 'block';
+    
+    // Atualizar título
+    const tituloGrade = document.querySelector('.grade-title');
+    if (tituloGrade) {
+        tituloGrade.textContent = `Grade Horária - ${nomeTurma}`;
+    }
+    
+    // Verificar se a turma tem grade definida
+    const gradeTurma = gradesHorarias[nomeTurma];
+    
+    if (!gradeTurma) {
+        // Turma sem grade definida
+        gradeTableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="info-box">
+                    <strong>Grade não preenchida</strong><br>
+                    Esta turma ainda não tem horários definidos.<br>
+                    <small>Para preencher, edite o arquivo script.js na função inicializarGrades()</small>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Determinar horários da turma
+    let horariosParaTurma = [];
+    if (turmas.manha.includes(nomeTurma)) {
+        horariosParaTurma = horarios.manha;
+    } else if (turmas.tarde.includes(nomeTurma)) {
+        horariosParaTurma = horarios.tarde;
+    } else if (turmas.noite.includes(nomeTurma)) {
+        horariosParaTurma = horarios.noite;
+    }
+    
+    // Limpar tabela
+    gradeTableBody.innerHTML = '';
+    
+    // Preencher tabela
+    horariosParaTurma.forEach(horario => {
+        const row = document.createElement('tr');
+        
+        // Coluna do horário
+        const horarioCell = document.createElement('td');
+        horarioCell.className = 'horario-cell';
+        horarioCell.textContent = horario;
+        row.appendChild(horarioCell);
+        
+        // Colunas dos dias
+        const diasSemana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'];
+        
+        diasSemana.forEach(dia => {
+            const cell = document.createElement('td');
+            cell.className = 'aula-cell';
+            
+            // Adicionar atributos de dados para controle de faltas
+            const aula = gradeTurma[dia] && gradeTurma[dia][horario];
+            if (aula) {
+                cell.setAttribute('data-professor', aula.professor);
+                cell.setAttribute('data-dia', dia);
+                
+                cell.innerHTML = `
+                    <div class="materia">${aula.materia}</div>
+                    <div class="professor">${aula.professor}</div>
+                `;
+            } else {
+                cell.innerHTML = `
+                    <div class="materia">--</div>
+                    <div class="professor">--</div>
+                `;
+            }
+            
+            row.appendChild(cell);
+        });
+        
+        gradeTableBody.appendChild(row);
+    });
+    
+    // Atualizar visual das faltas
+    atualizarVisualFaltas();
+    
+    // Configurar seletor de dias para alunos
+    if (tipo === 'aluno') {
+        configurarSeletorDias();
+    }
+    
+    // Mostrar funções do pedagogo se for pedagogo
+    if (tipo === 'pedagogo') {
+        const pedagogoFunctions = document.getElementById('pedagogoFunctionsTop');
+        if (pedagogoFunctions) {
+            pedagogoFunctions.style.display = 'block';
+        }
+    }
+}
+
+// Função para configurar seletor de dias
+function configurarSeletorDias() {
+    const botoesDias = document.querySelectorAll('.day-btn');
+    
+    botoesDias.forEach(botao => {
+        botao.addEventListener('click', (e) => {
+            // Remover classe ativa de todos os botões
+            botoesDias.forEach(btn => btn.classList.remove('active'));
+            
+            // Adicionar classe ativa ao botão clicado
+            e.target.classList.add('active');
+            
+            // Atualizar dia atual
+            diaAtual = e.target.dataset.dia;
+            
+            // Destacar coluna do dia selecionado
+            destacarColunaDia(diaAtual);
+        });
+    });
+    
+    // Destacar primeira coluna por padrão
+    if (botoesDias.length > 0) {
+        botoesDias[0].classList.add('active');
+        destacarColunaDia('Segunda-feira');
+    }
+}
+
+// Função para destacar coluna do dia
+function destacarColunaDia(dia) {
+    // Remover destaque de todas as colunas
+    document.querySelectorAll('.day-highlight').forEach(col => {
+        col.classList.remove('day-highlight');
+    });
+    
+    // Mapear dias para índices de coluna
+    const diasIndices = {
+        'Segunda-feira': 1,
+        'Terça-feira': 2,
+        'Quarta-feira': 3,
+        'Quinta-feira': 4,
+        'Sexta-feira': 5
+    };
+    
+    const indiceColuna = diasIndices[dia];
+    if (indiceColuna) {
+        // Destacar cabeçalho
+        const header = document.querySelector(`th:nth-child(${indiceColuna + 1})`);
+        if (header) {
+            header.classList.add('day-highlight');
+        }
+        
+        // Destacar todas as células da coluna
+        const cells = document.querySelectorAll(`td:nth-child(${indiceColuna + 1})`);
+        cells.forEach(cell => {
+            if (!cell.classList.contains('horario-cell')) {
+                cell.classList.add('day-highlight');
+            }
+        });
+    }
+}
+
+// Função para buscar turmas
+function configurarBuscaTurmas() {
+    const campoBusca = document.getElementById('buscaTurma');
+    const botoesTurmas = document.querySelectorAll('.turma-btn');
+    
+    if (campoBusca) {
+        campoBusca.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            
+            botoesTurmas.forEach(botao => {
                 const nomeTurma = botao.textContent.toLowerCase();
                 if (nomeTurma.includes(termo)) {
                     botao.style.display = 'block';
@@ -332,292 +624,47 @@ function configurarBuscaTurmas() {
     }
 }
 
-function exibirGradeHoraria(turma) {
-    turmaSelecionada = turma;
-    const gradeHorariaDiv = document.getElementById("gradeHoraria");
-    const turmaTitle = document.getElementById("turmaTitle");
-    const gradeTableBody = document.getElementById("gradeTableBody");
-    const infoBox = document.getElementById("infoBox");
-
-    if (!gradeHorariaDiv || !turmaTitle || !gradeTableBody) return;
-
-    turmaTitle.textContent = `Grade Horária - ${turma}`;
-
-    // Esconder a infoBox por padrão
-    if (infoBox) infoBox.style.display = 'none';
-
-    let gradeDaTurma = gradesHorarias[turma];
-
-    // Se a grade da turma não estiver definida, exibe a infoBox
-    if (!gradeDaTurma) {
-        if (infoBox) infoBox.style.display = 'block';
-        gradeDaTurma = {};
-    }
-
-    // Obter os horários baseados no período da turma
-    let horariosDoPeriodo = [];
-    if (turmas.manha.includes(turma)) {
-        horariosDoPeriodo = horarios.manha;
-    } else if (turmas.tarde.includes(turma)) {
-        horariosDoPeriodo = horarios.tarde;
-    } else if (turmas.noite.includes(turma)) {
-        horariosDoPeriodo = horarios.noite;
-    }
-
-    let tableHTML = "";
-    const diasDaSemana = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"];
-
-    // Cabeçalho da tabela com destaque do dia selecionado
-    tableHTML += `<thead><tr><th>Horário</th>`;
-    diasDaSemana.forEach(dia => {
-        const isHighlight = (tipoUsuario === 'aluno' && dia === diaSelecionado) ? 'day-highlight' : '';
-        tableHTML += `<th class="${isHighlight}">${dia}</th>`;
+// Função para configurar botões de turma
+function configurarBotoesTurma() {
+    const botoesTurmas = document.querySelectorAll('.turma-btn');
+    
+    botoesTurmas.forEach(botao => {
+        botao.addEventListener('click', (e) => {
+            const nomeTurma = e.target.textContent;
+            exibirGradeHoraria(nomeTurma, tipoUsuario);
+        });
     });
-    tableHTML += `</tr></thead><tbody>`;
-
-    horariosDoPeriodo.forEach(horario => {
-        tableHTML += `<tr><td class="horario-cell">${horario}</td>`;
-
-        diasDaSemana.forEach(dia => {
-            const aula = gradeDaTurma[dia] ? gradeDaTurma[dia][horario] : null;
-            const materia = aula ? aula.materia : "--";
-            const professor = aula ? aula.professor : "--";
-            
-            // Verifica se há falta para o professor neste dia
-            const isFalta = faltasProfessores[professor] && faltasProfessores[professor][dia] ? "falta" : "";
-            
-            // Destaque do dia selecionado
-            const isDayHighlight = (tipoUsuario === 'aluno' && dia === diaSelecionado) ? 'day-highlight' : '';
-            
-            tableHTML += `<td class="${isFalta} ${isDayHighlight}">
-                <div class="aula-info">
-                    <span class="materia">${materia}</span>
-                    <span class="professor">${professor}</span>
-                </div>
-            </td>`;
-        });
-        tableHTML += `</tr>`;
-    });
-
-    tableHTML += `</tbody>`;
-    gradeTableBody.innerHTML = tableHTML;
-
-    // Adicionar classe 'selected' ao botão da turma selecionada
-    const allTurmaButtons = document.querySelectorAll('#turmaButtons button');
-    allTurmaButtons.forEach(btn => {
-        if (btn.textContent === turma) {
-            btn.classList.add('selected');
-        } else {
-            btn.classList.remove('selected');
-        }
-    });
-
-    // Atualizar o dia selecionado no calendário do aluno
-    if (tipoUsuario === 'aluno') {
-        const dayButtons = document.querySelectorAll('.day-btn');
-        dayButtons.forEach(btn => {
-            if (btn.getAttribute('data-day') === diaSelecionado) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
-    }
-
-    gradeHorariaDiv.style.display = 'block';
 }
 
-function configurarEventos() {
-    const logoutBtn = document.getElementById('logoutBtn');
-    const marcarFaltaBtn = document.getElementById('marcarFaltaBtn');
-    const removerFaltaBtn = document.getElementById('removerFaltaBtn');
-    const alterarAulaBtn = document.getElementById('alterarAulaBtn');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    const printGradeBtn = document.getElementById('printGradeBtn');
-
-    if (logoutBtn) logoutBtn.addEventListener('click', logout);
-    if (marcarFaltaBtn) marcarFaltaBtn.addEventListener('click', marcarFaltaProfessor);
-    if (removerFaltaBtn) removerFaltaBtn.addEventListener('click', removerFaltaProfessor);
-    if (alterarAulaBtn) alterarAulaBtn.addEventListener('click', alterarAula);
-    if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
-    if (printGradeBtn) printGradeBtn.addEventListener('click', imprimirGrade);
-}
-
-function toggleFullscreen() {
-    const gradeHoraria = document.getElementById('gradeHoraria');
-    if (!gradeHoraria) return;
+// Função de inicialização
+function inicializar() {
+    // Obter parâmetros da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const turma = urlParams.get('turma');
+    const tipo = urlParams.get('tipo');
     
-    if (gradeHoraria.classList.contains('fullscreen')) {
-        gradeHoraria.classList.remove('fullscreen');
-    } else {
-        gradeHoraria.classList.add('fullscreen');
-    }
-}
-
-function imprimirGrade() {
-    window.print();
-}
-
-// Funções do pedagogo
-function logout() {
-    localStorage.clear();
-    window.location.href = 'index.html';
-}
-
-function marcarFaltaProfessor() {
-    const professor = document.getElementById('professorFalta').value.trim();
-    const dia = document.getElementById('diaFalta').value;
-    
-    if (!professor || !dia) {
-        mostrarNotificacao('Preencha todos os campos', 'error');
-        return;
-    }
-    
-    if (!faltasProfessores[professor]) {
-        faltasProfessores[professor] = {};
-    }
-    faltasProfessores[professor][dia] = true;
-    
-    mostrarNotificacao(`Falta marcada para ${professor} na ${dia}`, 'success');
-    
-    // Limpar campos
-    document.getElementById('professorFalta').value = '';
-    document.getElementById('diaFalta').value = 'Segunda-feira';
-    
-    if (turmaSelecionada) {
-        exibirGradeHoraria(turmaSelecionada);
-    }
-}
-
-function removerFaltaProfessor() {
-    const professor = document.getElementById('professorRemoverFalta').value.trim();
-    const dia = document.getElementById('diaRemoverFalta').value;
-    
-    if (!professor || !dia) {
-        mostrarNotificacao('Preencha todos os campos', 'error');
-        return;
-    }
-    
-    if (faltasProfessores[professor] && faltasProfessores[professor][dia]) {
-        delete faltasProfessores[professor][dia];
+    if (turma && tipo) {
+        tipoUsuario = tipo;
         
-        if (Object.keys(faltasProfessores[professor]).length === 0) {
-            delete faltasProfessores[professor];
+        // Inicializar dados
+        inicializarGrades();
+        carregarFaltas();
+        
+        // Configurar interface
+        if (tipo === 'pedagogo') {
+            popularDropdownProfessores();
+            popularDropdownTurmas();
+            configurarModais();
         }
         
-        mostrarNotificacao(`Falta removida para ${professor} na ${dia}`, 'success');
+        configurarBuscaTurmas();
+        configurarBotoesTurma();
         
-        // Limpar campos
-        document.getElementById('professorRemoverFalta').value = '';
-        document.getElementById('diaRemoverFalta').value = 'Segunda-feira';
-        
-        if (turmaSelecionada) {
-            exibirGradeHoraria(turmaSelecionada);
-        }
-    } else {
-        mostrarNotificacao('Falta não encontrada', 'error');
+        // Exibir grade
+        exibirGradeHoraria(turma, tipo);
     }
 }
 
-function alterarAula() {
-    const turma = document.getElementById('turmaAlterar').value;
-    const dia = document.getElementById('diaAlterar').value;
-    const horario = document.getElementById('horarioAlterar').value;
-    const novaMateria = document.getElementById('novaMateria').value.trim();
-    const novoProfessor = document.getElementById('novoProfessor').value.trim();
-    
-    if (!turma || !dia || !horario || !novaMateria || !novoProfessor) {
-        mostrarNotificacao('Preencha todos os campos', 'error');
-        return;
-    }
-    
-    if (!gradesHorarias[turma]) {
-        gradesHorarias[turma] = {};
-    }
-    if (!gradesHorarias[turma][dia]) {
-        gradesHorarias[turma][dia] = {};
-    }
-    
-    gradesHorarias[turma][dia][horario] = {
-        materia: novaMateria,
-        professor: novoProfessor
-    };
-    
-    mostrarNotificacao(`Aula alterada com sucesso`, 'success');
-    
-    // Limpar campos
-    document.getElementById('turmaAlterar').value = '';
-    document.getElementById('diaAlterar').value = 'Segunda-feira';
-    document.getElementById('horarioAlterar').value = '';
-    document.getElementById('novaMateria').value = '';
-    document.getElementById('novoProfessor').value = '';
-    
-    if (turmaSelecionada === turma) {
-        exibirGradeHoraria(turmaSelecionada);
-    }
-}
-
-function preencherSelectsTurmasEHorarios() {
-    const turmaSelect = document.getElementById('turmaAlterar');
-    const horarioSelect = document.getElementById('horarioAlterar');
-    
-    if (turmaSelect) {
-        turmaSelect.innerHTML = '<option value="">Selecione a turma</option>';
-        
-        // Adicionar todas as turmas
-        Object.keys(turmas).forEach(periodo => {
-            turmas[periodo].forEach(turma => {
-                const option = document.createElement('option');
-                option.value = turma;
-                option.textContent = turma;
-                turmaSelect.appendChild(option);
-            });
-        });
-        
-        // Evento para atualizar horários quando turma for selecionada
-        turmaSelect.addEventListener('change', function() {
-            const turmaSelecionada = this.value;
-            if (horarioSelect && turmaSelecionada) {
-                horarioSelect.innerHTML = '<option value="">Selecione o horário</option>';
-                
-                let horariosDoPeriodo = [];
-                if (turmas.manha.includes(turmaSelecionada)) {
-                    horariosDoPeriodo = horarios.manha;
-                } else if (turmas.tarde.includes(turmaSelecionada)) {
-                    horariosDoPeriodo = horarios.tarde;
-                } else if (turmas.noite.includes(turmaSelecionada)) {
-                    horariosDoPeriodo = horarios.noite;
-                }
-                
-                horariosDoPeriodo.forEach(horario => {
-                    const option = document.createElement('option');
-                    option.value = horario;
-                    option.textContent = horario;
-                    horarioSelect.appendChild(option);
-                });
-            }
-        });
-    }
-}
-
-function atualizarResumoDia() {
-    // Função para atualizar resumo do dia se necessário
-}
-
-function mostrarNotificacao(mensagem, tipo) {
-    // Criar elemento de notificação
-    const notificacao = document.createElement('div');
-    notificacao.className = `toast ${tipo}`;
-    notificacao.textContent = mensagem;
-    
-    // Adicionar ao body
-    document.body.appendChild(notificacao);
-    
-    // Remover após 3 segundos
-    setTimeout(() => {
-        if (notificacao.parentNode) {
-            notificacao.parentNode.removeChild(notificacao);
-        }
-    }, 3000);
-}
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', inicializar);
 

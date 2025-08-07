@@ -13,57 +13,121 @@
         <button id="logoutBtn" style="display:none;">Sair</button>
     </div>
 
-    <!-- Funções do Pedagogo - Horizontais e Compactas -->
-    <div class="pedagogo-functions-horizontal" id="pedagogoFunctionsTop" style="display:none;">
-        <div class="function-mini-card">
-            <h5>Marcar Falta</h5>
-            <div class="mini-form">
-                <input type="text" id="professorFalta" placeholder="Professor" class="mini-input">
-                <select id="diaFalta" class="mini-select">
-                    <option value="Segunda-feira">Segunda</option>
-                    <option value="Terça-feira">Terça</option>
-                    <option value="Quarta-feira">Quarta</option>
-                    <option value="Quinta-feira">Quinta</option>
-                    <option value="Sexta-feira">Sexta</option>
-                </select>
-                <button id="marcarFaltaBtn" class="btn-mini btn-danger">Marcar</button>
-            </div>
+    <!-- Funções do Pedagogo - Botões no Topo -->
+    <div class="pedagogo-functions-buttons" id="pedagogoFunctionsTop" style="display:none;">
+        <div class="welcome-text">Bem-vindo, pedagogo</div>
+        <div class="function-buttons">
+            <button id="trocarUsuarioBtn" class="function-btn btn-secondary">Trocar Usuário</button>
+            <button id="marcarFaltasBtn" class="function-btn btn-danger">Marcar Faltas</button>
+            <button id="removerFaltasBtn" class="function-btn btn-secondary">Remover Faltas</button>
+            <button id="editarHorariosBtn" class="function-btn btn-primary">Editar Horários</button>
+            <button id="logoutBtn" class="function-btn btn-secondary">Sair</button>
         </div>
-        
-        <div class="function-mini-card">
-            <h5>Remover Falta</h5>
-            <div class="mini-form">
-                <input type="text" id="professorRemoverFalta" placeholder="Professor" class="mini-input">
-                <select id="diaRemoverFalta" class="mini-select">
-                    <option value="Segunda-feira">Segunda</option>
-                    <option value="Terça-feira">Terça</option>
-                    <option value="Quarta-feira">Quarta</option>
-                    <option value="Quinta-feira">Quinta</option>
-                    <option value="Sexta-feira">Sexta</option>
-                </select>
-                <button id="removerFaltaBtn" class="btn-mini btn-success">Remover</button>
+    </div>
+
+    <!-- Modal para Marcar Faltas -->
+    <div id="modalMarcarFalta" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Marcar Falta de Professor</h3>
+                <span class="close" id="closeMarcarFalta">&times;</span>
             </div>
-        </div>
-        
-        <div class="function-mini-card">
-            <h5>Alterar Aula</h5>
-            <div class="mini-form">
-                <div class="mini-row">
-                    <select id="turmaAlterar" class="mini-select"></select>
-                    <select id="diaAlterar" class="mini-select">
-                        <option value="Segunda-feira">Segunda</option>
-                        <option value="Terça-feira">Terça</option>
-                        <option value="Quarta-feira">Quarta</option>
-                        <option value="Quinta-feira">Quinta</option>
-                        <option value="Sexta-feira">Sexta</option>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Selecione o Professor</label>
+                    <select id="professorFaltaModal" class="form-control">
+                        <option value="">Escolha um professor</option>
                     </select>
                 </div>
-                <select id="horarioAlterar" class="mini-select"></select>
-                <div class="mini-row">
-                    <input type="text" id="novaMateria" placeholder="Matéria" class="mini-input">
-                    <input type="text" id="novoProfessor" placeholder="Professor" class="mini-input">
+                <div class="form-group">
+                    <label>Selecione o Dia</label>
+                    <select id="diaFaltaModal" class="form-control">
+                        <option value="Segunda-feira">Segunda-feira</option>
+                        <option value="Terça-feira">Terça-feira</option>
+                        <option value="Quarta-feira">Quarta-feira</option>
+                        <option value="Quinta-feira">Quinta-feira</option>
+                        <option value="Sexta-feira">Sexta-feira</option>
+                    </select>
                 </div>
-                <button id="alterarAulaBtn" class="btn-mini btn-accent">Alterar</button>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmarMarcarFalta" class="btn-modal btn-danger">Marcar Falta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Remover Faltas -->
+    <div id="modalRemoverFalta" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Remover Falta de Professor</h3>
+                <span class="close" id="closeRemoverFalta">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Selecione o Professor</label>
+                    <select id="professorRemoverFaltaModal" class="form-control">
+                        <option value="">Escolha um professor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Selecione o Dia</label>
+                    <select id="diaRemoverFaltaModal" class="form-control">
+                        <option value="Segunda-feira">Segunda-feira</option>
+                        <option value="Terça-feira">Terça-feira</option>
+                        <option value="Quarta-feira">Quarta-feira</option>
+                        <option value="Quinta-feira">Quinta-feira</option>
+                        <option value="Sexta-feira">Sexta-feira</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmarRemoverFalta" class="btn-modal btn-success">Remover Falta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Horários -->
+    <div id="modalEditarHorarios" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Horários</h3>
+                <span class="close" id="closeEditarHorarios">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Selecione a Turma</label>
+                    <select id="turmaEditarModal" class="form-control">
+                        <option value="">Selecione a turma</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Selecione o Dia</label>
+                    <select id="diaEditarModal" class="form-control">
+                        <option value="Segunda-feira">Segunda-feira</option>
+                        <option value="Terça-feira">Terça-feira</option>
+                        <option value="Quarta-feira">Quarta-feira</option>
+                        <option value="Quinta-feira">Quinta-feira</option>
+                        <option value="Sexta-feira">Sexta-feira</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Selecione o Horário</label>
+                    <select id="horarioEditarModal" class="form-control">
+                        <option value="">Selecione o horário</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nova Matéria</label>
+                    <input type="text" id="novaMateriaModal" class="form-control" placeholder="Digite a nova matéria">
+                </div>
+                <div class="form-group">
+                    <label>Novo Professor</label>
+                    <input type="text" id="novoProfessorModal" class="form-control" placeholder="Digite o novo professor">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmarEditarHorario" class="btn-modal btn-primary">Salvar Alterações</button>
             </div>
         </div>
     </div>
@@ -127,6 +191,12 @@
                             <button id="fullscreenBtn" class="btn-icon" title="Tela Cheia">⛶</button>
                             <button id="printGradeBtn" class="btn-icon" title="Imprimir">🖨</button>
                         </div>
+                    </div>
+                    
+                    <div class="info-box" id="infoBox" style="display:none;">
+                        <h4>Grade não preenchida</h4>
+                        <p>Esta turma ainda não possui grade horária definida.</p>
+                        <p><strong>Para preencher:</strong> Edite o arquivo <code>script.js</code> na função <code>inicializarGrades()</code></p>
                     </div>
                     
                     <div class="grade-table-container">
