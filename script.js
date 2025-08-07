@@ -8,18 +8,18 @@ const horarios = {
 // Dados das turmas
 const turmas = {
     manha: [
-        'Turma 1° ADM', 'Turma 1° PORTOS', 'Turma 1° DS', 'Turma 1° BIO',
-        'Turma 2° ADM', 'Turma 2° PORTOS', 'Turma 2° DS', 'Turma 2° BIO',
-        'Turma 3° ADM', 'Turma 3° PORTOS', 'Turma 3° DS', 'Turma 3° A'
+        "Turma 1° ADM", "Turma 1° PORTOS", "Turma 1° DS", "Turma 1° BIO",
+        "Turma 2° ADM", "Turma 2° PORTOS", "Turma 2° DS", "Turma 2° BIO",
+        "Turma 3° ADM", "Turma 3° PORTOS", "Turma 3° DS", "Turma 3° A"
     ],
     tarde: [
-        'Turma 1° A', 'Turma 1° B', 'Turma 1° C', 'Turma 1° Adm',
-        'Turma 1° Portos', 'Turma 2° A', 'Turma 2° B', 'Turma 2° C',
-        'Turma 2° D', 'Turma 3° B', 'Turma 3° C', 'Turma 3° D'
+        "Turma 1° A", "Turma 1° B", "Turma 1° C", "Turma 1° Adm",
+        "Turma 1° Portos", "Turma 2° A", "Turma 2° B", "Turma 2° C",
+        "Turma 2° D", "Turma 3° B", "Turma 3° C", "Turma 3° D"
     ],
     noite: [
-        'Turma 1° STA', 'Turma 1° STB', 'Turma 2° STA', 'Turma 3° STA',
-        'Turma 3° STB', 'Turma 1° COMEX', 'Turma 2° A PORTOS', 'Turma 3° A PORTOS'
+        "Turma 1° STA", "Turma 1° STB", "Turma 2° STA", "Turma 3° STA",
+        "Turma 3° STB", "Turma 1° COMEX", "Turma 2° A PORTOS", "Turma 3° A PORTOS"
     ]
 };
 
@@ -514,8 +514,112 @@ function exibirGradeHoraria(turma) {
     const grade = gradesHorarias[turma];
     const horariosDoPeriodo = getHorariosDoPeriodo(turma);
 
-    let gradeHTML = `<h2>Grade Horária - ${turma} (${diaSelecionado})</h2>`;
-    gradeHTML += `<table class="grade-table">
+    let gradeHTML = `
+        <div class="grade-header">
+            <h2>Grade Horária - ${turma}</h2>
+            <div class="grade-actions">
+                <button id="fullscreenBtn" class="btn-icon" title="Tela cheia">⛶</button>
+                <button id="printGradeBtn" class="btn-icon" title="Imprimir grade">🖨</button>
+            </div>
+        </div>`;
+
+    // Se for aluno, mostrar seletor de dias
+    if (!isPedagogo) {
+        gradeHTML += `
+            <div class="day-selector-container">
+                <h3>Selecione o Dia da Semana:</h3>
+                <div class="day-selector">
+                    <button class="day-btn ${diaSelecionado === 'Segunda-feira' ? 'active' : ''}" data-day="Segunda-feira">
+                        <span class="day-name">Segunda</span>
+                        <span class="day-date">4/8</span>
+                    </button>
+                    <button class="day-btn ${diaSelecionado === 'Terça-feira' ? 'active' : ''}" data-day="Terça-feira">
+                        <span class="day-name">Terça</span>
+                        <span class="day-date">5/8</span>
+                    </button>
+                    <button class="day-btn ${diaSelecionado === 'Quarta-feira' ? 'active' : ''}" data-day="Quarta-feira">
+                        <span class="day-name">Quarta</span>
+                        <span class="day-date">6/8</span>
+                    </button>
+                    <button class="day-btn ${diaSelecionado === 'Quinta-feira' ? 'active' : ''}" data-day="Quinta-feira">
+                        <span class="day-name">Quinta</span>
+                        <span class="day-date">7/8</span>
+                    </button>
+                    <button class="day-btn ${diaSelecionado === 'Sexta-feira' ? 'active' : ''}" data-day="Sexta-feira">
+                        <span class="day-name">Sexta</span>
+                        <span class="day-date">8/8</span>
+                    </button>
+                </div>
+            </div>`;
+    }
+
+    // Tabela da grade horária
+    if (isPedagogo) {
+        // Para pedagogo: mostrar todos os dias em uma tabela
+        gradeHTML += `
+            <div class="table-container">
+                <table class="grade-table">
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Segunda-feira</th>
+                            <th>Terça-feira</th>
+                            <th>Quarta-feira</th>
+                            <th>Quinta-feira</th>
+                            <th>Sexta-feira</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+        if (!grade) {
+            // Se não há grade preenchida, mostra os horários vazios
+            horariosDoPeriodo.forEach(horario => {
+                gradeHTML += `<tr>
+                                <td class="horario-cell">${horario}</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                              </tr>`;
+            });
+        } else {
+            horariosDoPeriodo.forEach(horario => {
+                gradeHTML += `<tr><td class="horario-cell">${horario}</td>`;
+                
+                ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira'].forEach(dia => {
+                    const aula = grade[dia] && grade[dia][horario];
+                    let materia = '--';
+                    let professor = '--';
+                    let classFalta = '';
+
+                    if (aula) {
+                        materia = aula.materia;
+                        professor = aula.professor;
+                        // Verifica se o professor tem falta para o dia
+                        if (faltasProfessores[professor] && faltasProfessores[professor][dia]) {
+                            classFalta = 'falta';
+                        }
+                    }
+
+                    gradeHTML += `<td class="${classFalta}">
+                                    <div class="aula-info">
+                                        <div class="materia">${materia}</div>
+                                        <div class="professor">${professor}</div>
+                                    </div>
+                                  </td>`;
+                });
+                
+                gradeHTML += `</tr>`;
+            });
+        }
+
+        gradeHTML += `</tbody></table></div>`;
+    } else {
+        // Para aluno: mostrar apenas o dia selecionado
+        gradeHTML += `
+            <div class="table-container">
+                <table class="grade-table">
                     <thead>
                         <tr>
                             <th>Horário</th>
@@ -525,47 +629,45 @@ function exibirGradeHoraria(turma) {
                     </thead>
                     <tbody>`;
 
-    if (!grade || !grade[diaSelecionado]) {
-        // Se não há grade preenchida, mostra os horários vazios
-        horariosDoPeriodo.forEach(horario => {
-            gradeHTML += `<tr>
-                            <td>${horario}</td>
-                            <td>--</td>
-                            <td>--</td>
-                          </tr>`;
-        });
-    } else {
-        const aulasDoDia = grade[diaSelecionado];
-        horariosDoPeriodo.forEach(horario => {
-            const aula = aulasDoDia[horario];
-            let materia = '';
-            let professor = '';
-            let classFalta = '';
+        if (!grade || !grade[diaSelecionado]) {
+            // Se não há grade preenchida, mostra os horários vazios
+            horariosDoPeriodo.forEach(horario => {
+                gradeHTML += `<tr>
+                                <td class="horario-cell">${horario}</td>
+                                <td>--</td>
+                                <td>--</td>
+                              </tr>`;
+            });
+        } else {
+            const aulasDoDia = grade[diaSelecionado];
+            horariosDoPeriodo.forEach(horario => {
+                const aula = aulasDoDia[horario];
+                let materia = '--';
+                let professor = '--';
+                let classFalta = '';
 
-            if (aula) {
-                materia = aula.materia;
-                professor = aula.professor;
-                // Verifica se o professor tem falta para o dia selecionado
-                if (faltasProfessores[professor] && faltasProfessores[professor][diaSelecionado]) {
-                    classFalta = 'falta';
+                if (aula) {
+                    materia = aula.materia;
+                    professor = aula.professor;
+                    // Verifica se o professor tem falta para o dia selecionado
+                    if (faltasProfessores[professor] && faltasProfessores[professor][diaSelecionado]) {
+                        classFalta = 'falta';
+                    }
                 }
-            } else {
-                materia = '--';
-                professor = '--';
-            }
 
-            gradeHTML += `<tr class="${classFalta}">
-                            <td>${horario}</td>
-                            <td>${materia}</td>
-                            <td>${professor}</td>
-                          </tr>`;
-        });
+                gradeHTML += `<tr class="${classFalta}">
+                                <td class="horario-cell">${horario}</td>
+                                <td>${materia}</td>
+                                <td>${professor}</td>
+                              </tr>`;
+            });
+        }
+
+        gradeHTML += `</tbody></table></div>`;
     }
-
-    gradeHTML += `</tbody></table>`;
     
     // Adicionar informação sobre como preencher a grade se estiver vazia
-    if (!grade || !grade[diaSelecionado]) {
+    if (!grade) {
         gradeHTML += `<div class="info-box">
                         <p><strong>Informação:</strong> Esta grade horária ainda não foi preenchida.</p>
                         <p>Para preencher, você pode:</p>
@@ -578,6 +680,22 @@ function exibirGradeHoraria(turma) {
     }
     
     gradeContainer.innerHTML = gradeHTML;
+
+    // Adicionar event listeners para os botões de dia (apenas para alunos)
+    if (!isPedagogo) {
+        document.querySelectorAll('.day-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active de todos os botões
+                document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                // Adiciona active ao botão clicado
+                this.classList.add('active');
+                // Atualiza o dia selecionado
+                diaSelecionado = this.getAttribute('data-day');
+                // Reexibe a grade com o novo dia
+                exibirGradeHoraria(turmaSelecionada);
+            });
+        });
+    }
 }
 
 function getHorariosDoPeriodo(turma) {
