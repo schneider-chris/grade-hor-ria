@@ -13,94 +13,60 @@
         <button id="logoutBtn" style="display:none;">Sair</button>
     </div>
 
-    <!-- Funções do Pedagogo - Compactas e lado a lado -->
-    <div class="pedagogo-functions-top" id="pedagogoFunctionsTop" style="display:none;">
-        <div class="container">
-            <h2>Painel de Controle do Pedagogo</h2>
-            <div class="functions-compact-grid">
-                <div class="function-compact-card">
-                    <h4>Marcar Falta</h4>
-                    <div class="compact-form">
-                        <input type="text" id="professorFalta" placeholder="Nome do Professor">
-                        <select id="diaFalta">
-                            <option value="">Selecione o dia</option>
-                            <option value="Segunda-feira">Segunda-feira</option>
-                            <option value="Terça-feira">Terça-feira</option>
-                            <option value="Quarta-feira">Quarta-feira</option>
-                            <option value="Quinta-feira">Quinta-feira</option>
-                            <option value="Sexta-feira">Sexta-feira</option>
-                        </select>
-                        <button id="marcarFaltaBtn" class="btn-compact btn-primary">Marcar</button>
-                    </div>
+    <!-- Funções do Pedagogo - Horizontais e Compactas -->
+    <div class="pedagogo-functions-horizontal" id="pedagogoFunctionsTop" style="display:none;">
+        <div class="function-mini-card">
+            <h5>Marcar Falta</h5>
+            <div class="mini-form">
+                <input type="text" id="professorFalta" placeholder="Professor" class="mini-input">
+                <select id="diaFalta" class="mini-select">
+                    <option value="Segunda-feira">Segunda</option>
+                    <option value="Terça-feira">Terça</option>
+                    <option value="Quarta-feira">Quarta</option>
+                    <option value="Quinta-feira">Quinta</option>
+                    <option value="Sexta-feira">Sexta</option>
+                </select>
+                <button id="marcarFaltaBtn" class="btn-mini btn-danger">Marcar</button>
+            </div>
+        </div>
+        
+        <div class="function-mini-card">
+            <h5>Remover Falta</h5>
+            <div class="mini-form">
+                <input type="text" id="professorRemoverFalta" placeholder="Professor" class="mini-input">
+                <select id="diaRemoverFalta" class="mini-select">
+                    <option value="Segunda-feira">Segunda</option>
+                    <option value="Terça-feira">Terça</option>
+                    <option value="Quarta-feira">Quarta</option>
+                    <option value="Quinta-feira">Quinta</option>
+                    <option value="Sexta-feira">Sexta</option>
+                </select>
+                <button id="removerFaltaBtn" class="btn-mini btn-success">Remover</button>
+            </div>
+        </div>
+        
+        <div class="function-mini-card">
+            <h5>Alterar Aula</h5>
+            <div class="mini-form">
+                <div class="mini-row">
+                    <select id="turmaAlterar" class="mini-select"></select>
+                    <select id="diaAlterar" class="mini-select">
+                        <option value="Segunda-feira">Segunda</option>
+                        <option value="Terça-feira">Terça</option>
+                        <option value="Quarta-feira">Quarta</option>
+                        <option value="Quinta-feira">Quinta</option>
+                        <option value="Sexta-feira">Sexta</option>
+                    </select>
                 </div>
-                
-                <div class="function-compact-card">
-                    <h4>Remover Falta</h4>
-                    <div class="compact-form">
-                        <input type="text" id="professorRemoverFalta" placeholder="Nome do Professor">
-                        <select id="diaRemoverFalta">
-                            <option value="">Selecione o dia</option>
-                            <option value="Segunda-feira">Segunda-feira</option>
-                            <option value="Terça-feira">Terça-feira</option>
-                            <option value="Quarta-feira">Quarta-feira</option>
-                            <option value="Quinta-feira">Quinta-feira</option>
-                            <option value="Sexta-feira">Sexta-feira</option>
-                        </select>
-                        <button id="removerFaltaBtn" class="btn-compact btn-secondary">Remover</button>
-                    </div>
+                <select id="horarioAlterar" class="mini-select"></select>
+                <div class="mini-row">
+                    <input type="text" id="novaMateria" placeholder="Matéria" class="mini-input">
+                    <input type="text" id="novoProfessor" placeholder="Professor" class="mini-input">
                 </div>
-                
-                <div class="function-compact-card">
-                    <h4>Alterar Aula</h4>
-                    <div class="compact-form">
-                        <div class="form-row-compact">
-                            <select id="turmaAlterar"></select>
-                            <select id="diaAlterar">
-                                <option value="Segunda-feira">Segunda-feira</option>
-                                <option value="Terça-feira">Terça-feira</option>
-                                <option value="Quarta-feira">Quarta-feira</option>
-                                <option value="Quinta-feira">Quinta-feira</option>
-                                <option value="Sexta-feira">Sexta-feira</option>
-                            </select>
-                        </div>
-                        <select id="horarioAlterar"></select>
-                        <div class="form-row-compact">
-                            <input type="text" id="novaMateria" placeholder="Nova Matéria">
-                            <input type="text" id="novoProfessor" placeholder="Novo Professor">
-                        </div>
-                        <button id="alterarAulaBtn" class="btn-compact btn-accent">Alterar</button>
-                    </div>
-                </div>
-
-                <div class="function-compact-card">
-                    <h4>Relatórios</h4>
-                    <div class="compact-form">
-                        <button id="gerarRelatorioFaltasBtn" class="btn-compact btn-info">Relatório de Faltas</button>
-                        <button id="exportarGradeBtn" class="btn-compact btn-success">Exportar Grade</button>
-                        <button id="estatisticasBtn" class="btn-compact btn-warning">Estatísticas</button>
-                    </div>
-                </div>
+                <button id="alterarAulaBtn" class="btn-mini btn-accent">Alterar</button>
             </div>
         </div>
     </div>
-
-    <!-- Modal para Relatórios -->
-    <div id="modalRelatorio" class="modal" style="display:none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Relatório</h3>
-                <span class="close" id="closeModal">&times;</span>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Conteúdo do relatório será inserido aqui -->
-            </div>
-            <div class="modal-footer">
-                <button id="printReportBtn" class="btn-primary">Imprimir</button>
-                <button id="closeModalBtn" class="btn-secondary">Fechar</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Notificações Toast -->
     <div id="toastContainer" class="toast-container"></div>
 
@@ -153,33 +119,23 @@
             </div>
             
             <div id="gradeHorariaContainer">
-                <div class="grade-header">
-                    <h2>Grade Horária - <span id="turmaNome"></span></h2>
-                    <div class="grade-actions">
-                        <button id="fullscreenBtn" class="btn-icon" title="Tela cheia">
-                            <span>⛶</span>
-                        </button>
-                        <button id="printGradeBtn" class="btn-icon" title="Imprimir grade">
-                            <span>🖨</span>
-                        </button>
+                <!-- Conteúdo da grade será inserido aqui pelo JavaScript -->
+                <div id="gradeHoraria" style="display:none;">
+                    <div class="grade-header" id="gradeHeader">
+                        <h2 id="turmaTitle">Grade Horária</h2>
+                        <div class="grade-actions">
+                            <button id="fullscreenBtn" class="btn-icon" title="Tela Cheia">⛶</button>
+                            <button id="printGradeBtn" class="btn-icon" title="Imprimir">🖨</button>
+                        </div>
                     </div>
-                </div>
-                <div class="table-container">
-                    <table id="gradeHorariaTable">
-                        <thead>
-                            <tr>
-                                <th>Horário</th>
-                                <th>Segunda-feira</th>
-                                <th>Terça-feira</th>
-                                <th>Quarta-feira</th>
-                                <th>Quinta-feira</th>
-                                <th>Sexta-feira</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Aulas serão inseridas aqui pelo JavaScript -->
-                        </tbody>
-                    </table>
+                    
+                    <div class="grade-table-container">
+                        <table class="grade-table" id="gradeTable">
+                            <tbody id="gradeTableBody">
+                                <!-- Tabela será preenchida pelo JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

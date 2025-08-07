@@ -365,20 +365,15 @@ function exibirGradeHoraria(turma) {
     }
 
     let tableHTML = "";
-
-    // Cabeçalho da tabela
-    tableHTML += `<thead>
-        <tr>
-            <th>Horário</th>
-            <th>Segunda-feira</th>
-            <th>Terça-feira</th>
-            <th>Quarta-feira</th>
-            <th>Quinta-feira</th>
-            <th>Sexta-feira</th>
-        </tr>
-    </thead><tbody>`;
-
     const diasDaSemana = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"];
+
+    // Cabeçalho da tabela com destaque do dia selecionado
+    tableHTML += `<thead><tr><th>Horário</th>`;
+    diasDaSemana.forEach(dia => {
+        const isHighlight = (tipoUsuario === 'aluno' && dia === diaSelecionado) ? 'day-highlight' : '';
+        tableHTML += `<th class="${isHighlight}">${dia}</th>`;
+    });
+    tableHTML += `</tr></thead><tbody>`;
 
     horariosDoPeriodo.forEach(horario => {
         tableHTML += `<tr><td class="horario-cell">${horario}</td>`;
@@ -390,8 +385,11 @@ function exibirGradeHoraria(turma) {
             
             // Verifica se há falta para o professor neste dia
             const isFalta = faltasProfessores[professor] && faltasProfessores[professor][dia] ? "falta" : "";
-
-            tableHTML += `<td class="${isFalta}">
+            
+            // Destaque do dia selecionado
+            const isDayHighlight = (tipoUsuario === 'aluno' && dia === diaSelecionado) ? 'day-highlight' : '';
+            
+            tableHTML += `<td class="${isFalta} ${isDayHighlight}">
                 <div class="aula-info">
                     <span class="materia">${materia}</span>
                     <span class="professor">${professor}</span>
@@ -434,9 +432,6 @@ function configurarEventos() {
     const marcarFaltaBtn = document.getElementById('marcarFaltaBtn');
     const removerFaltaBtn = document.getElementById('removerFaltaBtn');
     const alterarAulaBtn = document.getElementById('alterarAulaBtn');
-    const gerarRelatorioFaltasBtn = document.getElementById('gerarRelatorioFaltasBtn');
-    const exportarGradeBtn = document.getElementById('exportarGradeBtn');
-    const estatisticasBtn = document.getElementById('estatisticasBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const printGradeBtn = document.getElementById('printGradeBtn');
 
@@ -444,199 +439,8 @@ function configurarEventos() {
     if (marcarFaltaBtn) marcarFaltaBtn.addEventListener('click', marcarFaltaProfessor);
     if (removerFaltaBtn) removerFaltaBtn.addEventListener('click', removerFaltaProfessor);
     if (alterarAulaBtn) alterarAulaBtn.addEventListener('click', alterarAula);
-    if (gerarRelatorioFaltasBtn) gerarRelatorioFaltasBtn.addEventListener('click', gerarRelatorioFaltas);
-    if (exportarGradeBtn) exportarGradeBtn.addEventListener('click', exportarGrade);
-    if (estatisticasBtn) estatisticasBtn.addEventListener('click', mostrarEstatisticas);
     if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
     if (printGradeBtn) printGradeBtn.addEventListener('click', imprimirGrade);
-
-    configurarModal();
-}
-
-function configurarModal() {
-    const modal = document.getElementById('modalRelatorio');
-    const closeModal = document.getElementById('closeModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const printReportBtn = document.getElementById('printReportBtn');
-
-    if (closeModal) {
-        closeModal.addEventListener('click', function() {
-            if (modal) modal.style.display = 'none';
-        });
-    }
-
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', function() {
-            if (modal) modal.style.display = 'none';
-        });
-    }
-
-    if (printReportBtn) {
-        printReportBtn.addEventListener('click', function() {
-            window.print();
-        });
-    }
-}
-
-// Funções do pedagogo
-function logout() {
-    localStorage.clear();
-    window.location.href = 'index.html';
-}
-
-function marcarFaltaProfessor() {
-    const professor = prompt('Nome do professor:');
-    const dia = prompt('Dia da semana (Segunda-feira, Terça-feira, etc.):');
-    
-    if (professor && dia) {
-        if (!faltasProfessores[professor]) {
-            faltasProfessores[professor] = {};
-        }
-        faltasProfessores[professor][dia] = true;
-        
-        mostrarNotificacao(`Falta marcada para ${professor} na ${dia}`, 'success');
-        
-        if (turmaSelecionada) {
-            exibirGradeHoraria(turmaSelecionada);
-        }
-    }
-}
-
-function removerFaltaProfessor() {
-    const professor = prompt('Nome do professor:');
-    const dia = prompt('Dia da semana (Segunda-feira, Terça-feira, etc.):');
-    
-    if (professor && dia && faltasProfessores[professor] && faltasProfessores[professor][dia]) {
-        delete faltasProfessores[professor][dia];
-        
-        if (Object.keys(faltasProfessores[professor]).length === 0) {
-            delete faltasProfessores[professor];
-        }
-        
-        mostrarNotificacao(`Falta removida para ${professor} na ${dia}`, 'success');
-        
-        if (turmaSelecionada) {
-            exibirGradeHoraria(turmaSelecionada);
-        }
-    } else {
-        mostrarNotificacao('Falta não encontrada', 'error');
-    }
-}
-
-function alterarAula() {
-    const turma = prompt('Nome da turma:');
-    const dia = prompt('Dia da semana (Segunda-feira, Terça-feira, etc.):');
-    const horario = prompt('Horário (ex: 7h30-8h20):');
-    const novaMateria = prompt('Nova matéria:');
-    const novoProfessor = prompt('Novo professor:');
-    
-    if (turma && dia && horario && novaMateria && novoProfessor) {
-        if (!gradesHorarias[turma]) {
-            gradesHorarias[turma] = {};
-        }
-        if (!gradesHorarias[turma][dia]) {
-            gradesHorarias[turma][dia] = {};
-        }
-        
-        gradesHorarias[turma][dia][horario] = {
-            materia: novaMateria,
-            professor: novoProfessor
-        };
-        
-        mostrarNotificacao(`Aula alterada com sucesso`, 'success');
-        
-        if (turmaSelecionada === turma) {
-            exibirGradeHoraria(turmaSelecionada);
-        }
-    }
-}
-
-function gerarRelatorioFaltas() {
-    const modal = document.getElementById('modalRelatorio');
-    const modalContent = document.getElementById('modalContent');
-    
-    if (!modal || !modalContent) return;
-    
-    let relatorio = '<h3>Relatório de Faltas</h3>';
-    
-    if (Object.keys(faltasProfessores).length === 0) {
-        relatorio += '<p>Nenhuma falta registrada.</p>';
-    } else {
-        relatorio += '<ul>';
-        for (const professor in faltasProfessores) {
-            relatorio += `<li><strong>${professor}</strong>: `;
-            const dias = Object.keys(faltasProfessores[professor]);
-            relatorio += dias.join(', ');
-            relatorio += '</li>';
-        }
-        relatorio += '</ul>';
-    }
-    
-    modalContent.innerHTML = relatorio;
-    modal.style.display = 'block';
-}
-
-function exportarGrade() {
-    if (!turmaSelecionada) {
-        mostrarNotificacao('Selecione uma turma primeiro', 'error');
-        return;
-    }
-    
-    const modal = document.getElementById('modalRelatorio');
-    const modalContent = document.getElementById('modalContent');
-    
-    if (!modal || !modalContent) return;
-    
-    let exportacao = `<h3>Grade Horária - ${turmaSelecionada}</h3>`;
-    exportacao += '<table border="1" style="width:100%; border-collapse: collapse;">';
-    exportacao += '<tr><th>Horário</th><th>Segunda</th><th>Terça</th><th>Quarta</th><th>Quinta</th><th>Sexta</th></tr>';
-    
-    let horariosDoPeriodo = [];
-    if (turmas.manha.includes(turmaSelecionada)) {
-        horariosDoPeriodo = horarios.manha;
-    } else if (turmas.tarde.includes(turmaSelecionada)) {
-        horariosDoPeriodo = horarios.tarde;
-    } else if (turmas.noite.includes(turmaSelecionada)) {
-        horariosDoPeriodo = horarios.noite;
-    }
-    
-    const gradeDaTurma = gradesHorarias[turmaSelecionada] || {};
-    const diasDaSemana = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira"];
-    
-    horariosDoPeriodo.forEach(horario => {
-        exportacao += `<tr><td>${horario}</td>`;
-        diasDaSemana.forEach(dia => {
-            const aula = gradeDaTurma[dia] ? gradeDaTurma[dia][horario] : null;
-            const materia = aula ? aula.materia : "--";
-            const professor = aula ? aula.professor : "--";
-            exportacao += `<td>${materia}<br><small>${professor}</small></td>`;
-        });
-        exportacao += '</tr>';
-    });
-    
-    exportacao += '</table>';
-    
-    modalContent.innerHTML = exportacao;
-    modal.style.display = 'block';
-}
-
-function mostrarEstatisticas() {
-    const modal = document.getElementById('modalRelatorio');
-    const modalContent = document.getElementById('modalContent');
-    
-    if (!modal || !modalContent) return;
-    
-    const totalTurmas = Object.keys(turmas).reduce((acc, periodo) => acc + turmas[periodo].length, 0);
-    const turmasComGrade = Object.keys(gradesHorarias).length;
-    const totalProfessores = Object.keys(faltasProfessores).length;
-    
-    let estatisticas = '<h3>Estatísticas do Sistema</h3>';
-    estatisticas += `<p><strong>Total de Turmas:</strong> ${totalTurmas}</p>`;
-    estatisticas += `<p><strong>Turmas com Grade:</strong> ${turmasComGrade}</p>`;
-    estatisticas += `<p><strong>Professores com Faltas:</strong> ${totalProfessores}</p>`;
-    
-    modalContent.innerHTML = estatisticas;
-    modal.style.display = 'block';
 }
 
 function toggleFullscreen() {
@@ -654,8 +458,146 @@ function imprimirGrade() {
     window.print();
 }
 
+// Funções do pedagogo
+function logout() {
+    localStorage.clear();
+    window.location.href = 'index.html';
+}
+
+function marcarFaltaProfessor() {
+    const professor = document.getElementById('professorFalta').value.trim();
+    const dia = document.getElementById('diaFalta').value;
+    
+    if (!professor || !dia) {
+        mostrarNotificacao('Preencha todos os campos', 'error');
+        return;
+    }
+    
+    if (!faltasProfessores[professor]) {
+        faltasProfessores[professor] = {};
+    }
+    faltasProfessores[professor][dia] = true;
+    
+    mostrarNotificacao(`Falta marcada para ${professor} na ${dia}`, 'success');
+    
+    // Limpar campos
+    document.getElementById('professorFalta').value = '';
+    document.getElementById('diaFalta').value = 'Segunda-feira';
+    
+    if (turmaSelecionada) {
+        exibirGradeHoraria(turmaSelecionada);
+    }
+}
+
+function removerFaltaProfessor() {
+    const professor = document.getElementById('professorRemoverFalta').value.trim();
+    const dia = document.getElementById('diaRemoverFalta').value;
+    
+    if (!professor || !dia) {
+        mostrarNotificacao('Preencha todos os campos', 'error');
+        return;
+    }
+    
+    if (faltasProfessores[professor] && faltasProfessores[professor][dia]) {
+        delete faltasProfessores[professor][dia];
+        
+        if (Object.keys(faltasProfessores[professor]).length === 0) {
+            delete faltasProfessores[professor];
+        }
+        
+        mostrarNotificacao(`Falta removida para ${professor} na ${dia}`, 'success');
+        
+        // Limpar campos
+        document.getElementById('professorRemoverFalta').value = '';
+        document.getElementById('diaRemoverFalta').value = 'Segunda-feira';
+        
+        if (turmaSelecionada) {
+            exibirGradeHoraria(turmaSelecionada);
+        }
+    } else {
+        mostrarNotificacao('Falta não encontrada', 'error');
+    }
+}
+
+function alterarAula() {
+    const turma = document.getElementById('turmaAlterar').value;
+    const dia = document.getElementById('diaAlterar').value;
+    const horario = document.getElementById('horarioAlterar').value;
+    const novaMateria = document.getElementById('novaMateria').value.trim();
+    const novoProfessor = document.getElementById('novoProfessor').value.trim();
+    
+    if (!turma || !dia || !horario || !novaMateria || !novoProfessor) {
+        mostrarNotificacao('Preencha todos os campos', 'error');
+        return;
+    }
+    
+    if (!gradesHorarias[turma]) {
+        gradesHorarias[turma] = {};
+    }
+    if (!gradesHorarias[turma][dia]) {
+        gradesHorarias[turma][dia] = {};
+    }
+    
+    gradesHorarias[turma][dia][horario] = {
+        materia: novaMateria,
+        professor: novoProfessor
+    };
+    
+    mostrarNotificacao(`Aula alterada com sucesso`, 'success');
+    
+    // Limpar campos
+    document.getElementById('turmaAlterar').value = '';
+    document.getElementById('diaAlterar').value = 'Segunda-feira';
+    document.getElementById('horarioAlterar').value = '';
+    document.getElementById('novaMateria').value = '';
+    document.getElementById('novoProfessor').value = '';
+    
+    if (turmaSelecionada === turma) {
+        exibirGradeHoraria(turmaSelecionada);
+    }
+}
+
 function preencherSelectsTurmasEHorarios() {
-    // Função para preencher selects se necessário
+    const turmaSelect = document.getElementById('turmaAlterar');
+    const horarioSelect = document.getElementById('horarioAlterar');
+    
+    if (turmaSelect) {
+        turmaSelect.innerHTML = '<option value="">Selecione a turma</option>';
+        
+        // Adicionar todas as turmas
+        Object.keys(turmas).forEach(periodo => {
+            turmas[periodo].forEach(turma => {
+                const option = document.createElement('option');
+                option.value = turma;
+                option.textContent = turma;
+                turmaSelect.appendChild(option);
+            });
+        });
+        
+        // Evento para atualizar horários quando turma for selecionada
+        turmaSelect.addEventListener('change', function() {
+            const turmaSelecionada = this.value;
+            if (horarioSelect && turmaSelecionada) {
+                horarioSelect.innerHTML = '<option value="">Selecione o horário</option>';
+                
+                let horariosDoPeriodo = [];
+                if (turmas.manha.includes(turmaSelecionada)) {
+                    horariosDoPeriodo = horarios.manha;
+                } else if (turmas.tarde.includes(turmaSelecionada)) {
+                    horariosDoPeriodo = horarios.tarde;
+                } else if (turmas.noite.includes(turmaSelecionada)) {
+                    horariosDoPeriodo = horarios.noite;
+                }
+                
+                horariosDoPeriodo.forEach(horario => {
+                    const option = document.createElement('option');
+                    option.value = horario;
+                    option.textContent = horario;
+                    horarioSelect.appendChild(option);
+                });
+            }
+        });
+    }
 }
 
 function atualizarResumoDia() {
