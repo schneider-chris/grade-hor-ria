@@ -22,7 +22,7 @@ const turmas = {
 // Função para inicializar as grades horárias
 function inicializarGrades() {
     // Exemplo para Turma 1A (Manhã)
-    gradesHorarias["Turma 1º ADM"] = {
+    gradesHorarias['1º ADM'] = {
         "Segunda-feira": {
             "7h30-8h20": { materia: "Português", professor: "Prof. Ana" },
             "8h20-9h10": { materia: "Matemática", professor: "Prof. Carlos" },
@@ -66,7 +66,7 @@ function inicializarGrades() {
     };
 
     // Exemplo para Turma 1B (Manhã)
-    gradesHorarias["Turma 1º PORTOS"] = {
+    gradesHorarias["1º PORTOS"] = {
         "Segunda-feira": {
             "7h30-8h20": { materia: "Matemática", professor: "Prof. Carlos" },
             "8h20-9h10": { materia: "Português", professor: "Prof. Ana" },
@@ -106,6 +106,91 @@ function inicializarGrades() {
             "10h20-11h10": { materia: "Ciências", professor: "Prof. Daniel" },
             "11h10-12h00": { materia: "Educação Física", professor: "Prof. Fernando" },
             "12h00-12h50": { materia: "Geografia", professor: "Prof. Eva" }
+        }
+    };
+
+    gradesHorarias['1º DS'] = {
+        "Segunda-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Terça-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Quarta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Quinta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Sexta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        }
+    };
+    gradesHorarias['1º BIO'] = {
+        "Segunda-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Terça-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Quarta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Quinta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
+        },
+        "Sexta-feira": {
+            "7h30-8h20": { materia: "-", professor: "" },
+            "8h20-9h10": { materia: "-", professor: "" },
+            "9h10-10h00": { materia: "-", professor: "" },
+            "10h20-11h10": { materia: "-", professor: "" },
+            "11h10-12h00": { materia: "-", professor: "" },
+            "12h00-12h50": { materia: "-", professor: "" }
         }
     };
 }
